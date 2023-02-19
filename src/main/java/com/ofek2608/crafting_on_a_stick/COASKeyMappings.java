@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 public class COASKeyMappings {
-	public static final KeyMapping OPEN_CURIOS_KEY = new KeyMapping("crafting_on_a_stick.key.open_curios", InputConstants.KEY_X, "key.categories.inventory");
+	public static final KeyMapping OPEN_CURIOS_KEY = new KeyMapping("crafting_on_a_stick.key.open_curios", InputConstants.KEY_V, "key.categories.inventory");
 	
 	@Mod.EventBusSubscriber(modid = CraftingOnAStick.ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 	private static class ForgeEvents {
