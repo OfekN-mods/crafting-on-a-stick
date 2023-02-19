@@ -6,6 +6,7 @@ Also for any question, you can join [the discord server](https://discord.gg/eTn5
 
 # Translations
 I am looking for translations, feel free to make pull requests.<br>
+Check the full translation at [en_us.json](https://github.com/ofek2608/crafting_on_a_stick/blob/main/src/main/resources/assets/crafting_on_a_stick/lang/en_us.json)
 ### How does the translations work?
 If in your language doesn't use genders, you can use the simple translations, as following:
 ```json
