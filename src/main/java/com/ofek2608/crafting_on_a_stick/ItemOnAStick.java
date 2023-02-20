@@ -20,14 +20,11 @@ public class ItemOnAStick extends Item {
 	private static final Item.Properties PROP = new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1);
 
 	public final String registryPath;
-	public final Component name;
 	public final MenuProvider menuProvider;
 
 	public ItemOnAStick(String registryPath, String containerName, MinecraftMenuBuilder builder) {
 		super(PROP);
 		this.registryPath = registryPath;
-		this.name = Component.translatable("block.minecraft." + registryPath)
-				.append(Component.translatable("gui.crafting_on_a_stick.suffix"));
 		this.menuProvider = new SimpleMenuProvider(
 				(id, inv, player) -> builder.create(id, inv, new EntityContainerLevelAccess(player)),
 				Component.translatable("container." + containerName)
@@ -42,7 +39,6 @@ public class ItemOnAStick extends Item {
 
 	@Override
 	public Component getName(ItemStack stack) {
-//		return name;
 		return Component.translatable(
 				this.getDescriptionId(stack),
 				Component.translatable("gui.crafting_on_a_stick.prefix"),

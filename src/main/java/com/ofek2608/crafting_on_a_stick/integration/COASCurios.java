@@ -4,6 +4,7 @@ import com.ofek2608.crafting_on_a_stick.CraftingOnAStick;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -73,7 +74,7 @@ public class COASCurios {
 		}
 	}
 	
-	@Mod.EventBusSubscriber(modid = CraftingOnAStick.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+	@Mod.EventBusSubscriber(modid = CraftingOnAStick.ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 	private static final class ModEvents {
 		private ModEvents() {}
 		
