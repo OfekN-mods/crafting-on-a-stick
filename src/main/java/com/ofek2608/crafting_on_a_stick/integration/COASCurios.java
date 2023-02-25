@@ -74,14 +74,14 @@ public class COASCurios {
 		}
 	}
 	
-	@Mod.EventBusSubscriber(modid = CraftingOnAStick.ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-	private static final class ModEvents {
-		private ModEvents() {}
-		
-		@SubscribeEvent
-		public static void event(TextureStitchEvent.Pre event) {
-			event.addSprite(CURIO_POCKET_ICON);
-		}
-	}
+//	@Mod.EventBusSubscriber(modid = CraftingOnAStick.ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+//	private static final class ModEvents {
+//		private ModEvents() {}
+//
+//		@SubscribeEvent
+//		public static void event(TextureStitchEvent.Pre event) {
+//			event.addSprite(CURIO_POCKET_ICON);
+//		}
+//	}
 	
 }

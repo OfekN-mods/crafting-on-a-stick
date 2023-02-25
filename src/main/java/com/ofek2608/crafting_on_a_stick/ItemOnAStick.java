@@ -17,7 +17,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class ItemOnAStick extends Item {
-	private static final Item.Properties PROP = new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1);
+	private static final Item.Properties PROP = new Item.Properties().stacksTo(1);
 
 	public final String registryPath;
 	public final MenuProvider menuProvider;
