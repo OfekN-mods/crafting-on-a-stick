@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -29,14 +30,15 @@ class SBOpenCurios {
 			ServerPlayer player = ctxSupplier.get().getSender();
 			if (player == null)
 				return;
-			IItemHandlerModifiable curiosInv = COASCurios.getCuriosInventory(player);
-			if (curiosInv == null)
+			Optional<IItemHandlerModifiable> curiosInvOpt = COASCurios.getCuriosInventory(player);
+			if (curiosInvOpt.isEmpty())
 				return;
+			IItemHandlerModifiable curiosInv = curiosInvOpt.get();
 			int size = curiosInv.getSlots();
 			for (int i = 0; i < size; i++) {
 				ItemStack stack = curiosInv.getStackInSlot(i);
 				if (!stack.isEmpty() && stack.getItem() instanceof ItemOnAStick)
-					stack.use(player.level, player, InteractionHand.MAIN_HAND);
+					stack.use(player.level(), player, InteractionHand.MAIN_HAND);
 			}
 		});
 		ctxSupplier.get().setPacketHandled(true);

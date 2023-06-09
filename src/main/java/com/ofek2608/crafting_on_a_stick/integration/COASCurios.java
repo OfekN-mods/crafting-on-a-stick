@@ -4,21 +4,16 @@ import com.ofek2608.crafting_on_a_stick.CraftingOnAStick;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
+//import top.theillusivec4.curios.api.CuriosApi;
+//import top.theillusivec4.curios.api.SlotTypeMessage;
+//import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
+//import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 
@@ -40,48 +35,38 @@ public class COASCurios {
 			Integrator.init();
 	}
 	
-	public static @Nullable IItemHandlerModifiable getCuriosInventory(Player player) {
+	public static Optional<IItemHandlerModifiable> getCuriosInventory(Player player) {
 		if (hasMod())
 			return Integrator.getCuriosInventory(player);
-		return null;
+		return Optional.empty();
 	}
 	
 	public static IItemHandlerModifiable getFullInventory(Player player) {
 		IItemHandlerModifiable inventory = new PlayerInvWrapper(player.getInventory());
-		IItemHandlerModifiable curios = getCuriosInventory(player);
-		return curios == null ? inventory : new CombinedInvWrapper(inventory, curios);
+		Optional<IItemHandlerModifiable> curios = getCuriosInventory(player);
+		return curios.isEmpty() ? inventory : new CombinedInvWrapper(inventory, curios.get());
 	}
 	
 	private static final class Integrator {
 		private Integrator() {}
 		
 		private static void init() {
-			InterModComms.sendTo(MODID, SlotTypeMessage.REGISTER_TYPE, ()->new SlotTypeMessage.Builder(SLOT_ID)
-					.icon(CURIO_POCKET_ICON)
-					.size(1)
-					.build()
-			);
+//			InterModComms.sendTo(MODID, SlotTypeMessage.REGISTER_TYPE, ()->new SlotTypeMessage.Builder(SLOT_ID)
+//					.icon(CURIO_POCKET_ICON)
+//					.size(1)
+//					.build()
+//			);
 		}
 		
-		private static @Nullable IItemHandlerModifiable getCuriosInventory(Player player) {
-			Optional<ICuriosItemHandler> itemHandler = CuriosApi.getCuriosHelper().getCuriosHandler(player).resolve();
-			if (itemHandler.isEmpty())
-				return null;
-			Optional<ICurioStacksHandler> stackHandler = itemHandler.get().getStacksHandler(SLOT_ID);
-			if (stackHandler.isEmpty())
-				return null;
-			return stackHandler.get().getStacks();
+		private static Optional<IItemHandlerModifiable> getCuriosInventory(Player player) {
+//			Optional<ICuriosItemHandler> itemHandler = CuriosApi.getCuriosHelper().getCuriosHandler(player).resolve();
+//			if (itemHandler.isEmpty())
+//				return Optional.empty();
+//			Optional<ICurioStacksHandler> stackHandler = itemHandler.get().getStacksHandler(SLOT_ID);
+//			if (stackHandler.isEmpty())
+//				return Optional.empty();
+//			return Optional.of(stackHandler.get().getStacks());
+			return Optional.empty();
 		}
 	}
-	
-//	@Mod.EventBusSubscriber(modid = CraftingOnAStick.ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-//	private static final class ModEvents {
-//		private ModEvents() {}
-//
-//		@SubscribeEvent
-//		public static void event(TextureStitchEvent.Pre event) {
-//			event.addSprite(CURIO_POCKET_ICON);
-//		}
-//	}
-	
 }

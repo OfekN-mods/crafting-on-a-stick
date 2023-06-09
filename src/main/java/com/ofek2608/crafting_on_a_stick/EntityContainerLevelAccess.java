@@ -21,6 +21,6 @@ public class EntityContainerLevelAccess implements ContainerLevelAccess {
 
 	@Override
 	public <T> Optional<T> evaluate(BiFunction<Level, BlockPos, T> func) {
-		return Optional.ofNullable(func.apply(entity.level, entity.blockPosition()));
+		return Optional.ofNullable(func.apply(entity.level(), entity.blockPosition()));
 	}
 }

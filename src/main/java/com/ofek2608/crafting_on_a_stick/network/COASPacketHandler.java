@@ -12,7 +12,7 @@ public final class COASPacketHandler {
 	private COASPacketHandler() {}
 	public static void loadClass() {}
 	
-	private static final String PROTOCOL_VERSION = "1.0.4";
+	private static final String PROTOCOL_VERSION = "1.0.0";
 	private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(CraftingOnAStick.loc("main"), ()->PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 	
 	static {
