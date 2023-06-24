@@ -11,6 +11,6 @@
 	"item.crafting_on_a_stick.chipped_anvil": "%1$s%2$s%3$s",
 	"item.crafting_on_a_stick.damaged_anvil": "%1$s%2$s%3$s",
 
-	"curios.identifier.crafting_on_a_stick": "막대기형 제작",
-	"crafting_on_a_stick.key.open_curios": "막대기형 제작 열기"
+	"curios.identifier.crafting_on_a_stick": "막대기형 작업대",
+	"crafting_on_a_stick.key.open_curios": "막대기형 작업대 열기"
 }
