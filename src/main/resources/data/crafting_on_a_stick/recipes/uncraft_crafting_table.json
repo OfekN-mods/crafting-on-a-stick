@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "crafting_on_a_stick:crafting_table"}
+  ],
+  "result": {
+    "item": "minecraft:crafting_table"
+  }
+}
