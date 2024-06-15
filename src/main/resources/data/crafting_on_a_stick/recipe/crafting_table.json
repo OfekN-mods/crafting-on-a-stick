@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " #",
+    "| "
+  ],
+  "key": {
+    "|": { "item": "minecraft:stick" },
+    "#": { "item": "minecraft:crafting_table" }
+  },
+  "result": {
+    "id": "crafting_on_a_stick:crafting_table",
+    "count": 1
+  }
+}

@@ -1,0 +1,37 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="GNU GENERAL PUBLIC LICENSE"
+issueTrackerURL="https://github.com/OfekN-mods/crafting-on-a-stick/issues"
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+#updateJSONURL="https://change.me.example.invalid/updates.json"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/crafting-on-a-stick"
+logoFile="crafting_on_a_stick.png"
+#credits=""
+authors="OfekN"
+description='''
+This mod adds multiple workbenches on a stick:
+ - Crafting Table
+ - Anvil
+ - Loom
+ - Grindstone
+ - Grindstone
+ - Cartography Table
+ - Cartography Table
+ - Stonecutter
+ - Smithing Table
+'''
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"

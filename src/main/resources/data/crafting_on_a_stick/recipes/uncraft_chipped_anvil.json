@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {"item": "crafting_on_a_stick:chipped_anvil"}
-  ],
-  "result": {
-    "item": "minecraft:chipped_anvil"
-  }
-}
