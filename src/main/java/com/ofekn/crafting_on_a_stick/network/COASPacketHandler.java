@@ -8,7 +8,6 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public final class COASPacketHandler {
 	private COASPacketHandler() {}
-	public static void loadClass() {}
 
 	private static final String PROTOCOL_VERSION = "1.21.0.1";
 	

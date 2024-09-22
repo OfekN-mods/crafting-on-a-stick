@@ -14,8 +14,6 @@ import java.util.Optional;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class COASCurios {
-	@SuppressWarnings("EmptyMethod") public static void load() {}
-
 	private static final String MODID = "curios";
 	private static final String SLOT_ID = "crafting_on_a_stick";
 

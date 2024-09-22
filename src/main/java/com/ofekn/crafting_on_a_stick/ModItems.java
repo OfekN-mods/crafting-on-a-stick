@@ -1,6 +1,7 @@
 package com.ofekn.crafting_on_a_stick;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
@@ -8,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.CommonHooks;
@@ -17,6 +19,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @ParametersAreNonnullByDefault
@@ -42,11 +46,48 @@ public final class ModItems {
 		return false;
 	}
 
+	private static void onContainerClosed(Player player, DeferredItem<ItemOnAStick> itemReg, AbstractContainerMenu menu, int offset, int slotCount) {
+		if (!COASConfig.getStoreItems()) {
+			return;
+		}
+		Item item = itemReg.get();
 
+		IItemHandlerModifiable inventory = COASUtils.getFullInventory(player);
+		int size = inventory.getSlots();
 
+		for (int i = 0; i < size; i++) {
+			ItemStack invStack = inventory.getStackInSlot(i);
+			if (invStack.isEmpty() || invStack.getItem() != item || invStack.has(DataComponents.CONTAINER)) {
+				continue;
+			}
+			ItemContainerContents result = getWorkbenchContent(menu, offset, slotCount);
+			invStack.set(DataComponents.CONTAINER, result);
+			return;
+		}
+	}
 
-
-
+	@Nullable
+	private static ItemContainerContents getWorkbenchContent(AbstractContainerMenu menu, int offset, int slotCount) {
+		List<ItemStack> result = new ArrayList<>();
+		for (int i = 0; i < offset; i++) {
+			result.add(ItemStack.EMPTY);
+		}
+		boolean hasItems = false;
+		for (int i = 0; i < slotCount; i++) {
+			ItemStack stack = menu.getSlot(offset + i).getItem();
+			result.add(stack);
+			if (!stack.isEmpty()) {
+				hasItems = true;
+			}
+		}
+		for (int i = 0; i < slotCount; i++) {
+			menu.getSlot(i + offset).set(ItemStack.EMPTY);
+		}
+		if (!hasItems) {
+			return null;
+		}
+		return ItemContainerContents.fromItems(result);
+	}
 
 
 	public static final DeferredItem<ItemOnAStick> CRAFTING_TABLE = createItem(Blocks.CRAFTING_TABLE, "crafting",
@@ -55,7 +96,14 @@ public final class ModItems {
 				public boolean stillValid(Player player) {
 					return doPlayerHave(player, CRAFTING_TABLE);
 				}
+
+				@Override
+				public void removed(Player player) {
+					onContainerClosed(player, CRAFTING_TABLE, this, 1, 9);
+					super.removed(player);
+				}
 			});
+
 	public static final DeferredItem<ItemOnAStick> LOOM = createItem(
 			Blocks.LOOM,
 			"loom",

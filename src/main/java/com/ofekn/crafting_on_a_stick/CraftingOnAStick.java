@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -20,7 +21,6 @@ public final class CraftingOnAStick {
     
     public CraftingOnAStick(IEventBus modEventBus, ModContainer modContainer) {
         ModItems.REGISTER.register(modEventBus);
-//        COASCurios.load();
-//        COASPacketHandler.loadClass();
+        modContainer.registerConfig(ModConfig.Type.COMMON, COASConfig.SPEC);
     }
 }
