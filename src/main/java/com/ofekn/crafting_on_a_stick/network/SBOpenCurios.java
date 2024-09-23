@@ -36,8 +36,11 @@ public final class SBOpenCurios implements CustomPacketPayload {
 			int size = curiosInv.getSlots();
 			for (int i = 0; i < size; i++) {
 				ItemStack stack = curiosInv.getStackInSlot(i);
-				if (!stack.isEmpty() && stack.getItem() instanceof ItemOnAStick)
-					stack.use(player.level(), player, InteractionHand.MAIN_HAND);
+				if (stack.getItem() instanceof ItemOnAStick) {
+					stack = ItemOnAStick.openContainer(player, stack);
+					curiosInv.setStackInSlot(i, stack);
+					break;
+				}
 			}
 		});
 	}

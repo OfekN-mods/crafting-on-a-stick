@@ -23,8 +23,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class ItemOnAStick extends Item {
 	private static final Item.Properties PROP = new Item.Properties().stacksTo(1);
 
-	public final String registryPath;
-	public final MenuProvider menuProvider;
+	private final String registryPath;
+	private final MenuProvider menuProvider;
 
 	public ItemOnAStick(String registryPath, String containerName, MinecraftMenuBuilder builder) {
 		super(PROP);
@@ -67,13 +67,25 @@ public class ItemOnAStick extends Item {
 		};
 	}
 
+	public static ItemStack openContainer(Player player, ItemStack stack) {
+		if (!(stack.getItem() instanceof ItemOnAStick item)) {
+			return stack;
+		}
+		ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
+		stack = stack.copy();
+		stack.remove(DataComponents.CONTAINER);
+		player.openMenu(item.createMenuProviderWrapper(contents));
+		return stack;
+
+	}
+
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
-		stack.remove(DataComponents.CONTAINER);
-		player.openMenu(createMenuProviderWrapper(contents));
-		return InteractionResultHolder.success(stack);
+		if (level.isClientSide()) {
+			return InteractionResultHolder.consume(stack);
+		}
+		return InteractionResultHolder.success(openContainer(player, stack));
 	}
 
 	@Override

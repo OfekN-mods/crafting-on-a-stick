@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -66,6 +67,13 @@ public final class ModItems {
 		}
 	}
 
+	private static boolean shouldKeepItem(ItemStack stack) {
+		if (stack.isEmpty()) {
+			return false;
+		}
+		return stack.getItem().canFitInsideContainerItems();
+	}
+
 	@Nullable
 	private static ItemContainerContents getWorkbenchContent(AbstractContainerMenu menu, int offset, int slotCount) {
 		List<ItemStack> result = new ArrayList<>();
@@ -74,14 +82,15 @@ public final class ModItems {
 		}
 		boolean hasItems = false;
 		for (int i = 0; i < slotCount; i++) {
-			ItemStack stack = menu.getSlot(offset + i).getItem();
-			result.add(stack);
-			if (!stack.isEmpty()) {
-				hasItems = true;
+			Slot slot = menu.getSlot(offset + i);
+			ItemStack stack = slot.getItem();
+			if (!shouldKeepItem(stack)) {
+				result.add(ItemStack.EMPTY);
+				continue;
 			}
-		}
-		for (int i = 0; i < slotCount; i++) {
-			menu.getSlot(i + offset).set(ItemStack.EMPTY);
+			hasItems = true;
+			result.add(stack);
+			slot.set(ItemStack.EMPTY);
 		}
 		if (!hasItems) {
 			return null;
