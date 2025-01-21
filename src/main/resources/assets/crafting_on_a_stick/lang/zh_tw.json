@@ -1,6 +1,6 @@
 {
-	"gui.crafting_on_a_stick.prefix": "",
-	"gui.crafting_on_a_stick.suffix": " on a Stick",
+	"gui.crafting_on_a_stick.prefix": "便攜式",
+	"gui.crafting_on_a_stick.suffix": "",
 	"item.crafting_on_a_stick.crafting_table": "%1$s%2$s%3$s",
 	"item.crafting_on_a_stick.loom": "%1$s%2$s%3$s",
 	"item.crafting_on_a_stick.grindstone": "%1$s%2$s%3$s",
@@ -11,6 +11,6 @@
 	"item.crafting_on_a_stick.chipped_anvil": "%1$s%2$s%3$s",
 	"item.crafting_on_a_stick.damaged_anvil": "%1$s%2$s%3$s",
 
-	"curios.identifier.crafting_on_a_stick": "Crafting on a Stick",
-	"crafting_on_a_stick.key.open_curios": "Open Crafting on a Stick"
+	"curios.identifier.crafting_on_a_stick": "便攜式工具",
+	"crafting_on_a_stick.key.open_curios": "開啟便攜式工具"
 }
