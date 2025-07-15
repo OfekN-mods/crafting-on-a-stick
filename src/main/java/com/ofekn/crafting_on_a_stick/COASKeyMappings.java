@@ -23,6 +23,9 @@ public class COASKeyMappings {
 	private static class ForgeEvents {
 		@SubscribeEvent
 		public static void event(ClientTickEvent.Pre event) {
+			if (keys == null) {
+				return;
+			}
 			boolean openCurios = keys.OPEN_CURIOS_KEY.consumeClick();
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.screen != null)
