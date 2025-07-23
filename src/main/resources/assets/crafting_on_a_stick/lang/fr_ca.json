@@ -1,0 +1,14 @@
+{
+  "item.crafting_on_a_stick.crafting_table": "Établi sur un bâton",
+  "item.crafting_on_a_stick.loom": "Métier à tisser sur un bâton",
+  "item.crafting_on_a_stick.grindstone": "Meule sur un bâton",
+  "item.crafting_on_a_stick.cartography_table": "Table de cartograhie sur un bâton",
+  "item.crafting_on_a_stick.stonecutter": "Tailleur de pierre sur un bâton",
+  "item.crafting_on_a_stick.smithing_table": "Table de forge sur un bâton",
+  "item.crafting_on_a_stick.anvil": "Enclume sur un bâton",
+  "item.crafting_on_a_stick.chipped_anvil": "Enclume ébréchée sur un bâton",
+  "item.crafting_on_a_stick.damaged_anvil": "Enclume endommagée sur un bâton",
+
+  "curios.identifier.crafting_on_a_stick": "Fabrication sur un bâton",
+  "crafting_on_a_stick.key.open_curios": "Ouvrir la fabrication sur un bâton"
+}
