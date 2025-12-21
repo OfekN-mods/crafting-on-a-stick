@@ -1,70 +1,66 @@
 package com.ofekn.crafting_on_a_stick;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.CommonHooks;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class ModItems {
 	private ModItems() {}
+    private static final Logger LOGGER = LogUtils.getLogger();
 	
 	public static final DeferredRegister.Items REGISTER = DeferredRegister.createItems(CraftingOnAStick.ID);
 
 
-	private static boolean doPlayerHave(Player player, DeferredItem<ItemOnAStick> itemReg) {
-		Item item = itemReg.get();
-		
-		IItemHandlerModifiable inventory = COASUtils.getFullInventory(player);
-		int size = inventory.getSlots();
-		
-		for (int i = 0; i < size; i++) {
-			ItemStack invStack = inventory.getStackInSlot(i);
-			if (!invStack.isEmpty() && invStack.getItem() == item)
-				return true;
-		}
+    private static Optional<Ref<ItemStack>> searchInventory(Player player, DeferredItem<ItemOnAStick> itemReg, Predicate<ItemStack> filter) {
+        Item item = itemReg.get();
+        List<Ref<ItemStack>> inventory = COASUtils.getFullInventory(player);
+        for (Ref<ItemStack> ref : inventory) {
+            ItemStack invStack = ref.get();
+            if (!invStack.isEmpty() && invStack.getItem() == item && filter.test(invStack)) {
+                return Optional.of(ref);
+            }
+        }
+        return Optional.empty();
+    }
 
-		return false;
+	private static boolean doPlayerHave(Player player, DeferredItem<ItemOnAStick> itemReg) {
+        return searchInventory(player, itemReg, stack -> true).isPresent();
 	}
 
 	private static void onContainerClosed(Player player, DeferredItem<ItemOnAStick> itemReg, AbstractContainerMenu menu, int offset, int slotCount) {
 		if (!COASConfig.getStoreItems()) {
 			return;
 		}
-		Item item = itemReg.get();
 
-		IItemHandlerModifiable inventory = COASUtils.getFullInventory(player);
-		int size = inventory.getSlots();
-
-		for (int i = 0; i < size; i++) {
-			ItemStack invStack = inventory.getStackInSlot(i);
-			if (invStack.isEmpty() || invStack.getItem() != item || invStack.has(DataComponents.CONTAINER)) {
-				continue;
-			}
-			ItemContainerContents result = getWorkbenchContent(menu, offset, slotCount);
-			invStack.set(DataComponents.CONTAINER, result);
-			return;
-		}
+        searchInventory(player, itemReg, stack -> !stack.has(DataComponents.CONTAINER)).ifPresent(ref -> {
+            ItemStack stack = ref.get();
+            ItemContainerContents result = getWorkbenchContent(menu, offset, slotCount);
+            stack.set(DataComponents.CONTAINER, result);
+            ref.set(stack);
+        });
 	}
 
 	private static boolean shouldKeepItem(ItemStack stack) {
@@ -228,47 +224,35 @@ public final class ModItems {
 
 
 	private static boolean damageAnvil(Player player, float breakChance) {
-		if (player.getAbilities().instabuild || player.getRandom().nextFloat() >= breakChance)
-			return false;
+		if (player.getAbilities().instabuild || player.getRandom().nextFloat() >= breakChance) {
+            return false;
+        }
 
-		ItemStack candidate;
+        Optional<Ref<ItemStack>> anvilRef;
 
-		candidate = damageAnvilItemStack(player.getItemInHand(InteractionHand.MAIN_HAND));
-		if (candidate != null) {
-			player.setItemInHand(InteractionHand.MAIN_HAND, candidate);
-			return candidate.isEmpty();
-		}
+        anvilRef = searchInventory(player, DAMAGED_ANVIL, stack -> true);
+        if (anvilRef.isPresent()) {
+            Ref<ItemStack> ref = anvilRef.get();
+            ref.set(ItemStack.EMPTY);
+            return true;
+        }
 
-		candidate = damageAnvilItemStack(player.getItemInHand(InteractionHand.OFF_HAND));
-		if (candidate != null) {
-			player.setItemInHand(InteractionHand.OFF_HAND, candidate);
-			return candidate.isEmpty();
-		}
-		
-		IItemHandlerModifiable inventory = COASUtils.getFullInventory(player);
-		int invSize = inventory.getSlots();
-		for (int i = 0; i < invSize; i++) {
-			candidate = damageAnvilItemStack(inventory.getStackInSlot(i));
-			if (candidate != null) {
-				inventory.setStackInSlot(i, candidate);
-				return candidate.isEmpty();
-			}
-		}
+        anvilRef = searchInventory(player, CHIPPED_ANVIL, stack -> true);
+        if (anvilRef.isPresent()) {
+            Ref<ItemStack> ref = anvilRef.get();
+            ref.set(ref.get().transmuteCopy(DAMAGED_ANVIL));
+            return false;
+        }
+
+        anvilRef = searchInventory(player, ANVIL, stack -> true);
+        if (anvilRef.isPresent()) {
+            Ref<ItemStack> ref = anvilRef.get();
+            ref.set(ref.get().transmuteCopy(CHIPPED_ANVIL));
+            return false;
+        }
+
+        LOGGER.warn("failed to get anvil to damage for {}", player);
 
 		return false;
-	}
-
-	@Nullable
-	private static ItemStack damageAnvilItemStack(ItemStack stack) {
-		if (stack.isEmpty())
-			return null;
-		Item item = stack.getItem();
-		if (item == ANVIL.get())
-			return new ItemStack(CHIPPED_ANVIL.get());
-		if (item == CHIPPED_ANVIL.get())
-			return new ItemStack(DAMAGED_ANVIL.get());
-		if (item == DAMAGED_ANVIL.get())
-			return ItemStack.EMPTY;
-		return null;
 	}
 }

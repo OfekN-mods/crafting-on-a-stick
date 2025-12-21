@@ -2,7 +2,6 @@ package com.ofekn.crafting_on_a_stick.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.ofekn.crafting_on_a_stick.CraftingOnAStick;
-import com.ofekn.crafting_on_a_stick.ModItems;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -12,8 +11,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-
-import java.util.List;
 
 public class COASKeyMappings {
     public static final KeyMapping OPEN_CURIOS_KEY = new KeyMapping("crafting_on_a_stick.key.open_curios", InputConstants.KEY_V, "key.categories.inventory");
@@ -31,19 +28,7 @@ public class COASKeyMappings {
 				return;
             if (openCurios) {
                 // TODO translatable
-                minecraft.setScreen(new COASWheelScreen(Component.literal("Select tool"), List.of(
-                        ModItems.CRAFTING_TABLE.toStack(),
-                        ModItems.CRAFTING_TABLE.toStack(),
-                        ModItems.CRAFTING_TABLE.toStack(),
-                        ModItems.CRAFTING_TABLE.toStack(),
-                        ModItems.CRAFTING_TABLE.toStack(),
-                        ModItems.CRAFTING_TABLE.toStack(),
-                        ModItems.CRAFTING_TABLE.toStack(),
-                        ModItems.CRAFTING_TABLE.toStack(),
-                        ModItems.CRAFTING_TABLE.toStack(),
-                        ModItems.GRINDSTONE.toStack(),
-                        ModItems.ANVIL.toStack()
-                )));
+                minecraft.setScreen(new COASWheelScreen(Component.literal("Select tool"), player));
             }
 		}
 	}
