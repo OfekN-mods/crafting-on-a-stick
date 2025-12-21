@@ -72,7 +72,6 @@ public class COASWheelScreen extends Screen {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         List<ItemStack> options = getOptions();
-        System.out.println(options);
 
         int numOptions = options.size();
         float centerX = width * 0.5f;
@@ -106,15 +105,5 @@ public class COASWheelScreen extends Screen {
             guiGraphics.renderFakeItem(options.get(i), x - 8, y - 8);
         }
 
-    }
-
-//    @Override
-//    protected void renderMenuBackground(GuiGraphics partialTick) {
-//        super.renderMenuBackground(partialTick);
-//    }
-
-    @Override
-    public void mouseMoved(double mouseX, double mouseY) {
-        super.mouseMoved(mouseX, mouseY);
     }
 }
