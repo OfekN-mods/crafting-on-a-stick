@@ -9,14 +9,14 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 public final class COASPacketHandler {
 	private COASPacketHandler() {}
 
-	private static final String PROTOCOL_VERSION = "1.21.0.1";
+	private static final String PROTOCOL_VERSION = "1.21.0.2";
 	
 	@EventBusSubscriber(modid = CraftingOnAStick.ID, bus = EventBusSubscriber.Bus.MOD)
 	private static final class Register {
 		@SubscribeEvent
 		public static void event(RegisterPayloadHandlersEvent event) {
 			PayloadRegistrar registrar = event.registrar(PROTOCOL_VERSION);
-			registrar.commonToServer(SBOpenCurios.TYPE, SBOpenCurios.CODEC, SBOpenCurios::handle);
+			registrar.playToServer(SBOpen.TYPE, SBOpen.CODEC, SBOpen::handle);
 		}
 	}
 }
