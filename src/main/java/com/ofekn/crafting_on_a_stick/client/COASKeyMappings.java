@@ -27,8 +27,7 @@ public class COASKeyMappings {
 			if (player == null)
 				return;
             if (openCurios) {
-                // TODO translatable
-                minecraft.setScreen(new COASWheelScreen(Component.literal("Select tool"), player));
+                COASWheelScreen.trigger(minecraft, player);
             }
 		}
 	}

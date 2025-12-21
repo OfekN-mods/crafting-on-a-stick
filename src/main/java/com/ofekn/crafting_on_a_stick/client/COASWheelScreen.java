@@ -4,6 +4,7 @@ import com.ofekn.crafting_on_a_stick.COASUtils;
 import com.ofekn.crafting_on_a_stick.ItemOnAStick;
 import com.ofekn.crafting_on_a_stick.Ref;
 import com.ofekn.crafting_on_a_stick.network.SBOpen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -20,14 +21,26 @@ public class COASWheelScreen extends Screen {
     private final Player player;
     private ItemStack selection;
 
-    protected COASWheelScreen(Component title, Player player) {
-        super(title);
-        this.player = player;
-        List<ItemStack> options = getOptions();
-        this.selection = options.isEmpty() ? ItemStack.EMPTY : options.getFirst();
+    public static void trigger(Minecraft minecraft, Player player) {
+        List<ItemStack> options = getOptions(player);
+        if (options.isEmpty()) {
+            return;
+        }
+        ItemStack firstOption = options.getFirst();
+        if (options.size() == 1) {
+            PacketDistributor.sendToServer(new SBOpen(firstOption));
+            return;
+        }
+        minecraft.setScreen(new COASWheelScreen(Component.literal("Select tool"), player, firstOption));
     }
 
-    public List<ItemStack> getOptions() {
+    protected COASWheelScreen(Component title, Player player, ItemStack firstOption) {
+        super(title);
+        this.player = player;
+        this.selection = firstOption;
+    }
+
+    public static List<ItemStack> getOptions(Player player) {
         List<ItemStack> result = COASUtils.getFullInventory(player)
                 .stream()
                 .map(Ref::get)
@@ -71,12 +84,13 @@ public class COASWheelScreen extends Screen {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
-        List<ItemStack> options = getOptions();
+        List<ItemStack> options = getOptions(player);
 
         int numOptions = options.size();
         float centerX = width * 0.5f;
         float centerY = height * 0.5f;
         if (numOptions == 0) {
+            // TODO translatable
             guiGraphics.drawCenteredString(font, Component.literal("You don't have any tool"), (int)centerX, (int)centerY, 0xFFFFFFFF);
             return;
         }
@@ -97,7 +111,7 @@ public class COASWheelScreen extends Screen {
             if (selectionRadians < 0) {
                 selectionRadians += (float) (2 * Math.PI);
             }
-            selectionIndex = Math.round(selectionRadians / anglePerSection) - 1;
+            selectionIndex = Math.round(selectionRadians / anglePerSection);
             // ensure between 0 and numAround - 1
             selectionIndex = (selectionIndex % numAround + numAround) % numAround;
             // ensure between 1 and numOptions - 1
@@ -112,7 +126,7 @@ public class COASWheelScreen extends Screen {
                 dx = 0;
                 dy = 0;
             } else {
-                float rad = i * anglePerSection;
+                float rad = (i - 1) * anglePerSection;
                 dx = Math.sin(rad) * radius;
                 dy = -Math.cos(rad) * radius;
             }
