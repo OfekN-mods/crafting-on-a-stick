@@ -58,8 +58,8 @@ public class COASWheelScreen extends Screen {
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         if (!COASKeyMappings.OPEN_CURIOS_KEY.isDown()) {
             this.onClose();
-            lastSelection = selection;
             if (!selection.isEmpty()) {
+                lastSelection = selection;
                 PacketDistributor.sendToServer(new SBOpen(selection));
             }
             return true;
@@ -77,33 +77,51 @@ public class COASWheelScreen extends Screen {
         float centerX = width * 0.5f;
         float centerY = height * 0.5f;
         if (numOptions == 0) {
-            guiGraphics.drawCenteredString(minecraft.font, Component.literal("You don't have any tool"), (int)centerX, (int)centerY, 0xFFFFFFFF);
+            guiGraphics.drawCenteredString(font, Component.literal("You don't have any tool"), (int)centerX, (int)centerY, 0xFFFFFFFF);
             return;
         }
+        int numAround = numOptions - 1;
+        float anglePerSection = 2 * (float)Math.PI / numAround;
+
         float dmx = mouseX - centerX;
         float dmy = mouseY - centerY;
         float maxRadius = Math.min(centerX, centerY) * 0.75f;
         // 2 * PI * r <= numOptions * 16 * sqrt(2)
         float radius = numOptions == 1 ? 0 : Math.clamp(32, maxRadius, numOptions * 4);
         float selectionRadians = Math.atan2(dmx, -dmy);
-        int selectionIndex = (int)Math.round(Math.toDegrees(selectionRadians) * numOptions / 360);
-        // ensure between 0 and numOptions - 1
-        selectionIndex = (selectionIndex % numOptions + numOptions) % numOptions;
 
-        selection = options.get(selectionIndex);
-
+        int selectionIndex;
         if (dmx * dmx + dmy * dmy <= 16 * 16) {
             selectionIndex = 0;
+        } else {
+            if (selectionRadians < 0) {
+                selectionRadians += (float) (2 * Math.PI);
+            }
+            selectionIndex = Math.round(selectionRadians / anglePerSection) - 1;
+            // ensure between 0 and numAround - 1
+            selectionIndex = (selectionIndex % numAround + numAround) % numAround;
+            // ensure between 1 and numOptions - 1
+            selectionIndex++;
         }
+        selection = options.get(selectionIndex);
 
         for (int i = 0; i < numOptions; i++) {
             int color = selectionIndex == i ? 0xFFFFFFFF : 0x7FFFFFFF;
-            float rad = Math.toRadians(i * 360 / (float)numOptions);
-            int x = (int)(centerX + Math.sin(rad) * radius);
-            int y = (int)(centerY - Math.cos(rad) * radius);
+            float dx, dy;
+            if (i == 0) {
+                dx = 0;
+                dy = 0;
+            } else {
+                float rad = i * anglePerSection;
+                dx = Math.sin(rad) * radius;
+                dy = -Math.cos(rad) * radius;
+            }
+            int x = (int)(centerX + dx);
+            int y = (int)(centerY + dy);
             guiGraphics.fill(x - 9, y - 9, x + 9, y + 9, color);
             guiGraphics.renderFakeItem(options.get(i), x - 8, y - 8);
         }
-
+//        guiGraphics.renderTooltip(minecraft.font, selection, mouseX, mouseY);
+        guiGraphics.renderTooltip(font, selection, (int)(centerX + radius + 8), (int)(centerY - radius));
     }
 }
