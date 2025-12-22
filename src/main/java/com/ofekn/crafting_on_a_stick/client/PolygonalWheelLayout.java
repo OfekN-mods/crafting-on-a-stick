@@ -5,7 +5,7 @@ import org.joml.Vector2f;
 
 import java.util.function.IntFunction;
 
-public enum PolygonalWheelLayout implements IntFunction<WheelPolygon[]> {
+public enum PolygonalWheelLayout implements WheelLayoutSupplier {
     INSTANCE;
 
     @Override
@@ -54,5 +54,10 @@ public enum PolygonalWheelLayout implements IntFunction<WheelPolygon[]> {
         }
 
         return result;
+    }
+
+    @Override
+    public String getSerializedName() {
+        return "polygonal";
     }
 }

@@ -1,6 +1,7 @@
 package com.ofekn.crafting_on_a_stick.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.ofekn.crafting_on_a_stick.COASConfig;
 import com.ofekn.crafting_on_a_stick.COASUtils;
 import com.ofekn.crafting_on_a_stick.ItemOnAStick;
 import com.ofekn.crafting_on_a_stick.Ref;
@@ -15,17 +16,21 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.joml.Vector2f;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
 public class COASWheelScreen extends Screen {
+    public static final List<WheelLayoutSupplier> POSSIBLE_LAYOUTS = new ArrayList<>();
+    static {
+        POSSIBLE_LAYOUTS.add(RoundWheelLayout.INSTANCE);
+        POSSIBLE_LAYOUTS.add(ListWheelLayout.INSTANCE);
+    }
     private static ItemStack lastSelection = ItemStack.EMPTY;
     private final Player player;
     private ItemStack selectionItem;
     private int selectionIndex;
-    // TODO config
-    private final IntFunction<WheelPolygon[]> layoutSupplier = RoundWheelLayout.INSTANCE;
+    private WheelLayoutSupplier layoutSupplier = RoundWheelLayout.INSTANCE;
 
     public static void trigger(Minecraft minecraft, Player player) {
         List<ItemStack> options = getOptions(player);
@@ -33,7 +38,7 @@ public class COASWheelScreen extends Screen {
             return;
         }
         ItemStack firstOption = options.getFirst();
-        if (options.size() == 1) {
+        if (options.size() == 1 || !COASKeyMappings.OPEN_CURIOS_KEY.isDown()) {
             PacketDistributor.sendToServer(new SBOpen(firstOption));
             return;
         }
@@ -46,6 +51,18 @@ public class COASWheelScreen extends Screen {
         this.player = player;
         this.selectionItem = firstOption;
         this.selectionIndex = 0;
+
+        String layoutName = COASConfig.Client.WHEEL_TYPE.get().toLowerCase();
+        for (WheelLayoutSupplier possibleLayout : POSSIBLE_LAYOUTS) {
+            if (possibleLayout.getSerializedName().equals(layoutName)) {
+                this.layoutSupplier = possibleLayout;
+                break;
+            }
+        }
+        if (this.layoutSupplier == null) {
+            this.layoutSupplier = POSSIBLE_LAYOUTS.getFirst();
+            COASConfig.Client.WHEEL_TYPE.set(this.layoutSupplier.getSerializedName());
+        }
     }
 
     public static List<ItemStack> getOptions(Player player) {
@@ -66,6 +83,22 @@ public class COASWheelScreen extends Screen {
     }
 
     @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (button == 0) {
+            select();
+            return true;
+        }
+        if (button == 1) {
+            int index = POSSIBLE_LAYOUTS.indexOf(layoutSupplier);
+            int newIndex = (index + 1) % POSSIBLE_LAYOUTS.size();
+            this.layoutSupplier = POSSIBLE_LAYOUTS.get(newIndex);
+            COASConfig.Client.WHEEL_TYPE.set(this.layoutSupplier.getSerializedName());
+            return true;
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
     public boolean isPauseScreen() {
         return false;
     }
@@ -78,14 +111,18 @@ public class COASWheelScreen extends Screen {
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         if (!COASKeyMappings.OPEN_CURIOS_KEY.isDown()) {
-            this.onClose();
-            if (!selectionItem.isEmpty()) {
-                lastSelection = selectionItem;
-                PacketDistributor.sendToServer(new SBOpen(selectionItem));
-            }
+            select();
             return true;
         }
         return super.keyReleased(keyCode, scanCode, modifiers);
+    }
+
+    private void select() {
+        this.onClose();
+        if (!selectionItem.isEmpty()) {
+            lastSelection = selectionItem;
+            PacketDistributor.sendToServer(new SBOpen(selectionItem));
+        }
     }
 
     @Override

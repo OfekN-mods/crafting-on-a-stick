@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.ofekn.crafting_on_a_stick.CraftingOnAStick;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -19,16 +18,18 @@ public class COASKeyMappings {
 	private static class ForgeEvents {
 		@SubscribeEvent
 		public static void event(ClientTickEvent.Pre event) {
-			boolean shouldOpen = OPEN_CURIOS_KEY.consumeClick() || OPEN_CURIOS_KEY.isDown();
-			Minecraft minecraft = Minecraft.getInstance();
-			if (minecraft.screen != null)
-				return;
-			Player player = minecraft.player;
-			if (player == null)
-				return;
-            if (shouldOpen) {
-                COASWheelScreen.trigger(minecraft, player);
+            if (!OPEN_CURIOS_KEY.consumeClick()) {
+                return;
             }
+			Minecraft minecraft = Minecraft.getInstance();
+			if (minecraft.screen != null) {
+                return;
+            }
+			Player player = minecraft.player;
+			if (player == null) {
+                return;
+            }
+            COASWheelScreen.trigger(minecraft, player);
 		}
 	}
 

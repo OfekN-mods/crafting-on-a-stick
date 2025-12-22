@@ -1,5 +1,7 @@
-package com.ofekn.crafting_on_a_stick;
+package com.ofekn.crafting_on_a_stick.client;
 
+import com.ofekn.crafting_on_a_stick.CraftingOnAStick;
+import com.ofekn.crafting_on_a_stick.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;

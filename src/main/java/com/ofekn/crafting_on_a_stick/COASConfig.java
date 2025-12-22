@@ -1,11 +1,7 @@
 package com.ofekn.crafting_on_a_stick;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-@EventBusSubscriber(modid = CraftingOnAStick.ID, bus = EventBusSubscriber.Bus.MOD)
 public final class COASConfig {
 	private COASConfig() {}
 
@@ -17,14 +13,18 @@ public final class COASConfig {
 
 	static final ModConfigSpec SPEC = BUILDER.build();
 
-	private static boolean storeItems;
-
 	public static boolean getStoreItems() {
-		return storeItems;
+		return STORE_ITEMS.get();
 	}
 
-	@SubscribeEvent
-	static void onLoad(final ModConfigEvent event) {
-		storeItems = STORE_ITEMS.get();
-	}
+    public static final class Client {
+        private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+
+        public static final ModConfigSpec.ConfigValue<String> WHEEL_TYPE = BUILDER
+                .comment("The kind of wheel to use, currently there are only \"round\" and \"list\"")
+                .define("wheelType", "round");
+
+        static final ModConfigSpec SPEC = BUILDER.build();
+
+    }
 }

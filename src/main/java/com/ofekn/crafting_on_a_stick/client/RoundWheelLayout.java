@@ -5,7 +5,7 @@ import org.joml.Vector2f;
 
 import java.util.function.IntFunction;
 
-public enum RoundWheelLayout implements IntFunction<WheelPolygon[]> {
+public enum RoundWheelLayout implements WheelLayoutSupplier {
     INSTANCE;
 
     private static final float R0 = 28;
@@ -67,5 +67,10 @@ public enum RoundWheelLayout implements IntFunction<WheelPolygon[]> {
         float dx = Math.sin(rad);
         float dy = -Math.cos(rad);
         return new Vector2f(distance * dx, distance * dy);
+    }
+
+    @Override
+    public String getSerializedName() {
+        return "round";
     }
 }

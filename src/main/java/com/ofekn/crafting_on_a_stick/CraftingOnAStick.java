@@ -22,5 +22,6 @@ public final class CraftingOnAStick {
     public CraftingOnAStick(IEventBus modEventBus, ModContainer modContainer) {
         ModItems.REGISTER.register(modEventBus);
         modContainer.registerConfig(ModConfig.Type.COMMON, COASConfig.SPEC);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, COASConfig.Client.SPEC);
     }
 }

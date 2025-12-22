@@ -4,7 +4,7 @@ import org.joml.Vector2f;
 
 import java.util.function.IntFunction;
 
-public enum ListWheelLayout implements IntFunction<WheelPolygon[]> {
+public enum ListWheelLayout implements WheelLayoutSupplier {
     INSTANCE;
 
     private static final float RADIUS = 9;
@@ -34,5 +34,10 @@ public enum ListWheelLayout implements IntFunction<WheelPolygon[]> {
         }
 
         return result;
+    }
+
+    @Override
+    public String getSerializedName() {
+        return "list";
     }
 }
