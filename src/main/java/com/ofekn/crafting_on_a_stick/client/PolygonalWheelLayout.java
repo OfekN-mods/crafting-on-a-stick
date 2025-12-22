@@ -3,8 +3,6 @@ package com.ofekn.crafting_on_a_stick.client;
 import org.joml.Math;
 import org.joml.Vector2f;
 
-import java.util.function.IntFunction;
-
 public enum PolygonalWheelLayout implements WheelLayoutSupplier {
     INSTANCE;
 
