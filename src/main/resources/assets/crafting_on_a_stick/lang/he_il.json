@@ -1,4 +1,8 @@
 {
 	"gui.crafting_on_a_stick.prefix": "",
-	"gui.crafting_on_a_stick.suffix": " על מקל"
+	"gui.crafting_on_a_stick.suffix": " על מקל",
+
+  "curios.identifier.crafting_on_a_stick": "שולחן עבודה על מקל",
+  "crafting_on_a_stick.key.open_curios": "פתיחת שולחן עבודה על מקל",
+  "gui.crafting_on_a_stick.selection_wheel.no_tool": "אין לך אף שולחן עבודה"
 }

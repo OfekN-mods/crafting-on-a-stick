@@ -42,8 +42,7 @@ public class COASWheelScreen extends Screen {
             PacketDistributor.sendToServer(new SBOpen(firstOption));
             return;
         }
-        // TODO translatable
-        minecraft.setScreen(new COASWheelScreen(Component.literal("Select tool"), player, firstOption));
+        minecraft.setScreen(new COASWheelScreen(Component.empty(), player, firstOption));
     }
 
     protected COASWheelScreen(Component title, Player player, ItemStack firstOption) {
@@ -160,8 +159,7 @@ public class COASWheelScreen extends Screen {
         float centerX = width * 0.5f;
         float centerY = height * 0.5f;
         if (numOptions == 0) {
-            // TODO translatable
-            guiGraphics.drawCenteredString(font, Component.literal("You don't have any tool"), (int)centerX, (int)centerY, 0xFFFFFFFF);
+            guiGraphics.drawCenteredString(font, Component.translatable("gui.crafting_on_a_stick.selection_wheel.no_tool"), (int)centerX, (int)centerY, 0xFFFFFFFF);
             return;
         }
         pos.pushPose();
