@@ -19,14 +19,14 @@ public class COASKeyMappings {
 	private static class ForgeEvents {
 		@SubscribeEvent
 		public static void event(ClientTickEvent.Pre event) {
-			boolean openCurios = OPEN_CURIOS_KEY.isDown();
+			boolean shouldOpen = OPEN_CURIOS_KEY.consumeClick() || OPEN_CURIOS_KEY.isDown();
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.screen != null)
 				return;
 			Player player = minecraft.player;
 			if (player == null)
 				return;
-            if (openCurios) {
+            if (shouldOpen) {
                 COASWheelScreen.trigger(minecraft, player);
             }
 		}
