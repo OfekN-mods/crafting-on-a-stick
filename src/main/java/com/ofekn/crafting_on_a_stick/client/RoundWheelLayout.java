@@ -6,10 +6,11 @@ import org.joml.Vector2f;
 public enum RoundWheelLayout implements WheelLayoutSupplier {
     INSTANCE;
 
-    private static final float R0 = 28;
+    private static final float GAP = 2;
     private static final float R1 = 32;
-    private static final float R2 = 48;
     private static final float R3 = 64;
+    private static final float R0 = R1 - 2 * GAP;
+    private static final float R2 = (R1 + R3) / 2;
     private static final int N_CENTRAL_POINTS = 360;
     private static final int N_HALF_AROUND_POINTS = 360;
 
@@ -42,8 +43,8 @@ public enum RoundWheelLayout implements WheelLayoutSupplier {
     }
 
     private static WheelPolygon createAround(int index, int numAround) {
-        float gap1 = numAround == 1 ? 0 : 0.3f / R1;
-        float gap3 = numAround == 1 ? 0 : 0.3f / R3;
+        float gap1 = numAround == 1 ? 0 : Math.asin(GAP / R1) / (2 * (float)Math.PI);
+        float gap3 = numAround == 1 ? 0 : Math.asin(GAP / R3) / (2 * (float)Math.PI);
         float alpha1 = (index - 0.5f) / numAround + gap1;
         float beta1 = (index + 0.5f) / numAround - gap1;
         float alpha3 = (index - 0.5f) / numAround + gap3;
