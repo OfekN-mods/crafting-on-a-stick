@@ -72,7 +72,7 @@ public class COASWheelScreen extends Screen {
                 .map(Ref::get)
                 .map(stack -> stack.getItem() instanceof IWheelItem item ? item.getWheelRepresentative(player, stack) : ItemStack.EMPTY)
                 .filter(stack -> !stack.isEmpty())
-                .collect(Collectors.toList());
+                .toList();
         
         // Deduplicate using ItemStack.isSameItemSameComponents
         List<ItemStack> result = new ArrayList<>();

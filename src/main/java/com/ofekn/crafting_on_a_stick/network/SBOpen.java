@@ -1,9 +1,8 @@
 package com.ofekn.crafting_on_a_stick.network;
 
 import com.ofekn.crafting_on_a_stick.COASUtils;
-import com.ofekn.crafting_on_a_stick.ItemOnAStick;
-import com.ofekn.crafting_on_a_stick.api.Ref;
 import com.ofekn.crafting_on_a_stick.api.IWheelItem;
+import com.ofekn.crafting_on_a_stick.api.Ref;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
