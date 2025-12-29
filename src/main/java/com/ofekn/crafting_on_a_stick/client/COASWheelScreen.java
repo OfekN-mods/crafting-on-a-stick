@@ -31,6 +31,7 @@ public class COASWheelScreen extends Screen {
     private ItemStack selectionItem;
     private int selectionIndex;
     private WheelLayoutSupplier layoutSupplier = RoundWheelLayout.INSTANCE;
+    private int openTick;
 
     public static void trigger(Minecraft minecraft, Player player) {
         List<ItemStack> options = getOptions(player);
@@ -50,6 +51,7 @@ public class COASWheelScreen extends Screen {
         this.player = player;
         this.selectionItem = firstOption;
         this.selectionIndex = 0;
+        this.openTick = 0;
 
         String layoutName = COASConfig.Client.WHEEL_TYPE.get().toLowerCase();
         for (WheelLayoutSupplier possibleLayout : POSSIBLE_LAYOUTS) {
@@ -105,6 +107,7 @@ public class COASWheelScreen extends Screen {
     @Override
     public void tick() {
         super.tick();
+        openTick++;
     }
 
     @Override
@@ -153,17 +156,22 @@ public class COASWheelScreen extends Screen {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         PoseStack pos = guiGraphics.pose();
 
+        float t = Math.min(1.0f, getAnimationT(partialTick));
+
         List<ItemStack> options = getOptions(player);
 
         int numOptions = options.size();
         float centerX = width * 0.5f;
         float centerY = height * 0.5f;
         if (numOptions == 0) {
-            guiGraphics.drawCenteredString(font, Component.translatable("gui.crafting_on_a_stick.selection_wheel.no_tool"), (int)centerX, (int)centerY, 0xFFFFFFFF);
+            int textColor = applyAlpha(0xFFFFFFFF, t);
+            guiGraphics.drawCenteredString(font, Component.translatable("gui.crafting_on_a_stick.selection_wheel.no_tool"), (int)centerX, (int)centerY, textColor);
             return;
         }
+        float scale = easeScale(t);
         pos.pushPose();
         pos.translate(centerX, centerY, 0);
+        pos.scale(scale, scale, 1.0f);
 
 
         WheelPolygon[] layout = getLayout(numOptions);
@@ -171,21 +179,54 @@ public class COASWheelScreen extends Screen {
 
         for (int i = 0; i < numOptions; i++) {
             WheelPolygon polygon = layout[i];
-            int color = selectionIndex == i ? 0xFFFFFFFF : 0x80FFFFFF;
-            polygon.fill(guiGraphics, RenderType.gui(), 0, color);
+            int baseColor = selectionIndex == i ? 0xFFFFFFFF : 0x80FFFFFF;
+            polygon.fill(guiGraphics, RenderType.gui(), 0, applyAlpha(baseColor, t));
 
-            int x = (int)polygon.center().x;
-            int y = (int)polygon.center().y;
-            guiGraphics.renderFakeItem(options.get(i), x - 8, y - 8);
+            float x = polygon.center().x;
+            float y = polygon.center().y;
+            pos.pushPose();
+            pos.translate(x, y, 0);
+            guiGraphics.renderFakeItem(options.get(i), -8, -8);
+            pos.popPose();
 
             if (selectionIndex == i) {
-                polygon.fill(guiGraphics, RenderType.guiOverlay(), 10, 0x7FFFFFFF);
+                int overlayColor = applyAlpha(0x7FFFFFFF, t);
+                polygon.fill(guiGraphics, RenderType.guiOverlay(), 10, overlayColor);
             }
         }
         pos.popPose();
-        guiGraphics.renderTooltip(font, selectionItem, mouseX, mouseY);
+        if (t > 0.99f) { // Only show tooltip when mostly faded in
+            guiGraphics.renderTooltip(font, selectionItem, mouseX, mouseY);
+        }
         // this is cool looking, but can have issues if it's too wide compared to the window
 //        guiGraphics.renderTooltip(font, selection, (int)(centerX + radius + 8), (int)(centerY - radius));
+    }
+
+    @Override
+    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        float t = getAnimationT(partialTick);
+        guiGraphics.fill(0, 0, width, height, applyAlpha(0x40000000, t));
+    }
+
+    private float easeScale(float t) {
+        // alternative easing
+//        return = (float) Math.pow(t, 4);
+        float c1 = 1.70158f;
+        float c3 = c1 + 1;
+        return (float) (1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2));
+
+    }
+
+    private float getAnimationT(float partialTick) {
+        // snap opens
+//        return openTick > 4 ? 1 : 0;
+        float t = (openTick + partialTick - 4) / 6;
+        return Math.clamp(t, 0.0f, 1.0f);
+    }
+
+    private int applyAlpha(int color, float t) {
+        int a = (int)((color >>> 24) * t) & 0xFF;
+        return (a << 24) | (color & 0x00FFFFFF);
     }
 
     private WheelPolygon[] getLayout(int numOptions) {
