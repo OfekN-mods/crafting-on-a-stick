@@ -3,8 +3,8 @@ package com.ofekn.crafting_on_a_stick.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ofekn.crafting_on_a_stick.COASConfig;
 import com.ofekn.crafting_on_a_stick.COASUtils;
-import com.ofekn.crafting_on_a_stick.ItemOnAStick;
-import com.ofekn.crafting_on_a_stick.Ref;
+import com.ofekn.crafting_on_a_stick.api.Ref;
+import com.ofekn.crafting_on_a_stick.api.IWheelItem;
 import com.ofekn.crafting_on_a_stick.network.SBOpen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -67,12 +67,28 @@ public class COASWheelScreen extends Screen {
     }
 
     public static List<ItemStack> getOptions(Player player) {
-        List<ItemStack> result = COASUtils.getFullInventory(player)
+        List<ItemStack> allOptions = COASUtils.getFullInventory(player)
                 .stream()
                 .map(Ref::get)
-                .filter(item -> item.getItem() instanceof ItemOnAStick)
-                .distinct()
+                .map(stack -> stack.getItem() instanceof IWheelItem item ? item.getWheelRepresentative(player, stack) : ItemStack.EMPTY)
+                .filter(stack -> !stack.isEmpty())
                 .collect(Collectors.toList());
+        
+        // Deduplicate using ItemStack.isSameItemSameComponents
+        List<ItemStack> result = new ArrayList<>();
+        for (ItemStack stack : allOptions) {
+            boolean isDuplicate = false;
+            for (ItemStack existing : result) {
+                if (ItemStack.isSameItemSameComponents(stack, existing)) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            if (!isDuplicate) {
+                result.add(stack);
+            }
+        }
+        
         for (int i = 0; i < result.size(); i++) {
             if (ItemStack.isSameItemSameComponents(result.get(i), lastSelection)) {
                 result.remove(i);

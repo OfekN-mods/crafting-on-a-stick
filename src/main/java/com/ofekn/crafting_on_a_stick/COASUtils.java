@@ -1,5 +1,6 @@
 package com.ofekn.crafting_on_a_stick;
 
+import com.ofekn.crafting_on_a_stick.api.Ref;
 import com.ofekn.crafting_on_a_stick.integration.COASCurios;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,5 +25,5 @@ public final class COASUtils {
 		COASCurios.getCuriosInventory(player, result);
 		return result;
 	}
-	
+
 }

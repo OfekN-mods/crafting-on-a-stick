@@ -1,5 +1,7 @@
 package com.ofekn.crafting_on_a_stick;
 
+import com.ofekn.crafting_on_a_stick.api.IWheelItem;
+import com.ofekn.crafting_on_a_stick.api.Ref;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -20,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ItemOnAStick extends Item {
+public class ItemOnAStick extends Item implements IWheelItem {
 	private static final Item.Properties PROP = new Item.Properties().stacksTo(1);
 
 	private final String registryPath;
@@ -67,14 +69,11 @@ public class ItemOnAStick extends Item {
 		};
 	}
 
-	public static ItemStack openContainer(Player player, ItemStack stack) {
-		if (!(stack.getItem() instanceof ItemOnAStick item)) {
-			return stack;
-		}
+	public ItemStack openContainer(Player player, ItemStack stack) {
 		ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
 		stack = stack.copy();
 		stack.remove(DataComponents.CONTAINER);
-		player.openMenu(item.createMenuProviderWrapper(contents));
+		player.openMenu(createMenuProviderWrapper(contents));
 		return stack;
 
 	}
@@ -97,4 +96,9 @@ public class ItemOnAStick extends Item {
 				Component.translatable("gui.crafting_on_a_stick.suffix")
 		);
 	}
+
+    @Override
+    public void onWheelAction(Player player, Ref<ItemStack> stackRef) {
+        stackRef.set(openContainer(player, stackRef.get()));
+    }
 }

@@ -2,7 +2,8 @@ package com.ofekn.crafting_on_a_stick.network;
 
 import com.ofekn.crafting_on_a_stick.COASUtils;
 import com.ofekn.crafting_on_a_stick.ItemOnAStick;
-import com.ofekn.crafting_on_a_stick.Ref;
+import com.ofekn.crafting_on_a_stick.api.Ref;
+import com.ofekn.crafting_on_a_stick.api.IWheelItem;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -34,13 +35,14 @@ public record SBOpen(ItemStack selected) implements CustomPacketPayload {
                 if (inventoryStack.isEmpty()) {
                     continue;
                 }
-                if (!ItemStack.isSameItemSameComponents(inventoryStack, selected)) {
+                if (!(inventoryStack.getItem() instanceof IWheelItem wheelItem)) {
                     continue;
                 }
-                if (!(inventoryStack.getItem() instanceof ItemOnAStick)) {
+                ItemStack representative = wheelItem.getWheelRepresentative(player, inventoryStack);
+                if (!ItemStack.isSameItemSameComponents(representative, selected)) {
                     continue;
                 }
-                ref.set(ItemOnAStick.openContainer(player, inventoryStack));
+                wheelItem.onWheelAction(player, ref);
                 break;
             }
 		});

@@ -1,6 +1,7 @@
 package com.ofekn.crafting_on_a_stick;
 
 import com.mojang.logging.LogUtils;
+import com.ofekn.crafting_on_a_stick.api.Ref;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,6 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 
@@ -95,7 +97,7 @@ public final class ModItems {
 	}
 
 
-	public static final DeferredItem<ItemOnAStick> CRAFTING_TABLE = createItem(Blocks.CRAFTING_TABLE, "crafting",
+	public static final DeferredItem<ItemOnAStick> CRAFTING_TABLE = createSimpleItem(Blocks.CRAFTING_TABLE, "crafting",
 			(a,b,c)->new CraftingMenu(a,b,c) {
 				@Override
 				public boolean stillValid(Player player) {
@@ -109,7 +111,7 @@ public final class ModItems {
 				}
 			});
 
-	public static final DeferredItem<ItemOnAStick> LOOM = createItem(
+	public static final DeferredItem<ItemOnAStick> LOOM = createSimpleItem(
 			Blocks.LOOM,
 			"loom",
 			(a,b,c)->new LoomMenu(a,b,c) {
@@ -118,7 +120,7 @@ public final class ModItems {
 					return doPlayerHave(player, LOOM);
 				}
 			});
-	public static final DeferredItem<ItemOnAStick> GRINDSTONE = createItem(
+	public static final DeferredItem<ItemOnAStick> GRINDSTONE = createSimpleItem(
 			Blocks.GRINDSTONE,
 			"grindstone_title",
 			(a,b,c)->new GrindstoneMenu(a,b,c) {
@@ -127,7 +129,7 @@ public final class ModItems {
 					return doPlayerHave(player, GRINDSTONE);
 				}
 			});
-	public static final DeferredItem<ItemOnAStick> CARTOGRAPHY_TABLE = createItem(
+	public static final DeferredItem<ItemOnAStick> CARTOGRAPHY_TABLE = createSimpleItem(
 			Blocks.CARTOGRAPHY_TABLE,
 			"cartography_table",
 			(a,b,c)->new CartographyTableMenu(a,b,c) {
@@ -136,7 +138,7 @@ public final class ModItems {
 					return doPlayerHave(player, CARTOGRAPHY_TABLE);
 				}
 			});
-	public static final DeferredItem<ItemOnAStick> STONECUTTER = createItem(
+	public static final DeferredItem<ItemOnAStick> STONECUTTER = createSimpleItem(
 			Blocks.STONECUTTER,
 			"stonecutter",
 			(a,b,c)->new StonecutterMenu(a,b,c) {
@@ -145,7 +147,7 @@ public final class ModItems {
 					return doPlayerHave(player, STONECUTTER);
 				}
 			});
-	public static final DeferredItem<ItemOnAStick> SMITHING_TABLE = createItem(
+	public static final DeferredItem<ItemOnAStick> SMITHING_TABLE = createSimpleItem(
 			Blocks.SMITHING_TABLE,
 			"upgrade",
 			(a,b,c)->new SmithingMenu(a,b,c) {
@@ -170,47 +172,57 @@ public final class ModItems {
 
 
 
-	private static DeferredItem<ItemOnAStick> createItem(Block block, String containerName, MinecraftMenuBuilder builder) {
-		ResourceKey<Block> blockKey = BuiltInRegistries.BLOCK.getResourceKey(block).orElseThrow();
-		String path = blockKey.location().getPath();
-		return REGISTER.register(path, ()->new ItemOnAStick(path, containerName, builder));
+	private static DeferredItem<ItemOnAStick> createSimpleItem(Block block, String containerName, MinecraftMenuBuilder builder) {
+        return createItem(block, (path) -> new ItemOnAStick(path, containerName, builder));
 	}
 
+    private static <T extends Item> DeferredItem<T> createItem(Block block, Function<String, T> itemConstructor) {
+        ResourceKey<Block> blockKey = BuiltInRegistries.BLOCK.getResourceKey(block).orElseThrow();
+        String path = blockKey.location().getPath();
+        return REGISTER.register(path, ()->itemConstructor.apply(path));
+    }
+
 	private static DeferredItem<ItemOnAStick> createAnvil(Block block) {
-		return createItem(block, "repair", (a,b,c)->new AnvilMenu(a,b,c) {
-			@Override
-			public boolean stillValid(Player player) {
-				return  doPlayerHave(player, DAMAGED_ANVIL) ||
-						doPlayerHave(player, CHIPPED_ANVIL) ||
-						doPlayerHave(player, ANVIL);
-			}
+        MinecraftMenuBuilder builder = (a, b, c)->new AnvilMenu(a,b,c) {
+            @Override
+            public boolean stillValid(Player player) {
+                return  doPlayerHave(player, DAMAGED_ANVIL) ||
+                        doPlayerHave(player, CHIPPED_ANVIL) ||
+                        doPlayerHave(player, ANVIL);
+            }
 
-			@Override
-			protected void onTake(Player p_150474_, ItemStack p_150475_) {
-				if (!p_150474_.getAbilities().instabuild) {
-					p_150474_.giveExperienceLevels(-this.getCost());
-				}
+            @Override
+            protected void onTake(Player p_150474_, ItemStack p_150475_) {
+                if (!p_150474_.getAbilities().instabuild) {
+                    p_150474_.giveExperienceLevels(-this.getCost());
+                }
 
-				float breakChance = CommonHooks.onAnvilRepair(p_150474_, p_150475_, this.inputSlots.getItem(0), this.inputSlots.getItem(1));
+                float breakChance = CommonHooks.onAnvilRepair(p_150474_, p_150475_, this.inputSlots.getItem(0), this.inputSlots.getItem(1));
 
-				this.inputSlots.setItem(0, ItemStack.EMPTY);
-				if (this.repairItemCountCost > 0) {
-					ItemStack itemstack = this.inputSlots.getItem(1);
-					if (!itemstack.isEmpty() && itemstack.getCount() > this.repairItemCountCost) {
-						itemstack.shrink(this.repairItemCountCost);
-						this.inputSlots.setItem(1, itemstack);
-					} else {
-						this.inputSlots.setItem(1, ItemStack.EMPTY);
-					}
-				} else {
-					this.inputSlots.setItem(1, ItemStack.EMPTY);
-				}
+                this.inputSlots.setItem(0, ItemStack.EMPTY);
+                if (this.repairItemCountCost > 0) {
+                    ItemStack itemstack = this.inputSlots.getItem(1);
+                    if (!itemstack.isEmpty() && itemstack.getCount() > this.repairItemCountCost) {
+                        itemstack.shrink(this.repairItemCountCost);
+                        this.inputSlots.setItem(1, itemstack);
+                    } else {
+                        this.inputSlots.setItem(1, ItemStack.EMPTY);
+                    }
+                } else {
+                    this.inputSlots.setItem(1, ItemStack.EMPTY);
+                }
 
-				this.setMaximumCost(0);
-				this.access.execute((p_150479_, p_150480_) ->
-						p_150479_.levelEvent(damageAnvil(p_150474_, breakChance) ? 1029 : 1030, p_150480_, 0));
-			}
-		});
+                this.setMaximumCost(0);
+                this.access.execute((p_150479_, p_150480_) ->
+                        p_150479_.levelEvent(damageAnvil(p_150474_, breakChance) ? 1029 : 1030, p_150480_, 0));
+            }
+        };
+		return createItem(block, (path) -> new ItemOnAStick(path, "repair", builder) {
+            @Override
+            public ItemStack getWheelRepresentative(Player player, ItemStack stack) {
+                return stack.transmuteCopy(ANVIL, 1);
+            }
+        });
 	}
 
 
