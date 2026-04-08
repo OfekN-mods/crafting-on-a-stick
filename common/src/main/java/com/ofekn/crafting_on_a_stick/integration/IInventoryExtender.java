@@ -6,11 +6,6 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public enum CuriosIntegration implements ICuriosIntegration {
-    INSTANCE;
-
-    @Override
-    public void getCuriosInventory(Player player, List<Ref<ItemStack>> result) {
-        // TODO implement
-    }
+public interface IInventoryExtender {
+    void get(Player player, List<Ref<ItemStack>> result);
 }

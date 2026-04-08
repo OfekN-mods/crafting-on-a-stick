@@ -2,6 +2,7 @@ package com.ofekn.crafting_on_a_stick;
 
 import com.ofekn.crafting_on_a_stick.api.Ref;
 import com.ofekn.crafting_on_a_stick.integration.CoasIntegrations;
+import com.ofekn.crafting_on_a_stick.integration.IInventoryExtender;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +39,9 @@ public final class CoasUtils {
                 inventory.getContainerSize(),
                 result
         );
-        CoasIntegrations.CURIOS.getCuriosInventory(player, result);
+        for (IInventoryExtender extender : CoasIntegrations.INVENTORY_EXTENDERS) {
+            extender.get(player, result);
+        }
         return result;
     }
 }

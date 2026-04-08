@@ -2,6 +2,11 @@ package com.ofekn.crafting_on_a_stick.integration;
 
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 public interface IPlatformIntegration {
 
     /**
@@ -32,9 +37,10 @@ public interface IPlatformIntegration {
      * @return The name of the environment type.
      */
     default String getEnvironmentName() {
-
         return isDevelopmentEnvironment() ? "development" : "production";
     }
 
     void sendPacketToServer(CustomPacketPayload payload);
+
+    default void getInventoryExtenders(BiConsumer<String, Supplier<IInventoryExtender>> output) {}
 }
