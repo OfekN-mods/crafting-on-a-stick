@@ -16,7 +16,7 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-          "com.ofekn.crafting_on_a_stick.COASFabric"
+          "com.ofekn.crafting_on_a_stick.fabric.CoasFabric"
         ]
     },
     "mixins": [

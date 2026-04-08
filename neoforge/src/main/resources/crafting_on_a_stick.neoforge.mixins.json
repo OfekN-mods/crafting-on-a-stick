@@ -1,8 +1,8 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.ofekn.crafting_on_a_stick.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "package": "com.ofekn.crafting_on_a_stick.neoforge.mixin",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [],
   "client": [
     "MixinTitleScreen"

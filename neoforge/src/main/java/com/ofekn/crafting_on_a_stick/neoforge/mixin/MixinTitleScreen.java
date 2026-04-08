@@ -1,4 +1,4 @@
-package com.ofekn.crafting_on_a_stick.mixin;
+package com.ofekn.crafting_on_a_stick.neoforge.mixin;
 
 import com.ofekn.crafting_on_a_stick.Constants;
 import net.minecraft.client.Minecraft;

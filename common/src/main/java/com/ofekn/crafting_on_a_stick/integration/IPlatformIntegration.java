@@ -1,6 +1,6 @@
-package com.ofekn.crafting_on_a_stick.platform.services;
+package com.ofekn.crafting_on_a_stick.integration;
 
-public interface IPlatformHelper {
+public interface IPlatformIntegration {
 
     /**
      * Gets the name of the current platform
