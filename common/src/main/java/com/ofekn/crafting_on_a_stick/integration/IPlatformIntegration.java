@@ -1,5 +1,7 @@
 package com.ofekn.crafting_on_a_stick.integration;
 
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+
 public interface IPlatformIntegration {
 
     /**
@@ -33,4 +35,6 @@ public interface IPlatformIntegration {
 
         return isDevelopmentEnvironment() ? "development" : "production";
     }
+
+    void sendPacketToServer(CustomPacketPayload payload);
 }
