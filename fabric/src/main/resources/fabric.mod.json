@@ -17,6 +17,9 @@
     "entrypoints": {
         "main": [
           "com.ofekn.crafting_on_a_stick.fabric.CoasFabric"
+        ],
+        "jei_mod_plugin": [
+          "com.ofekn.crafting_on_a_stick.integration.CoasJei"
         ]
     },
     "mixins": [
