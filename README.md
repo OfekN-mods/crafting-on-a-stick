@@ -5,20 +5,21 @@ Also for any question, you can join [the discord server](https://discord.gg/eTn5
 
 
 # Translations
-I am looking for translations, feel free to make pull requests for the latest version. *(and ping me in discord if I don't see it)*<br>
+I am looking for translations, feel free to make pull requests for the latest version.<br>
 Check the full translation at [en_us.json](https://github.com/OfekN-mods/crafting-on-a-stick/blob/HEAD/common/src/main/resources/assets/crafting_on_a_stick/lang/en_us.json)
 ### How does the translations work?
-If in your language doesn't use genders, you can use the simple translations, as following:
+There are 2 main ways to add translations to the items:
+#### 1. Using a template
 ```json
 {
-    "gui.crafting_on_a_stick.prefix": "Example ",
-    "gui.crafting_on_a_stick.suffix": " on a Stick"
+    "item.crafting_on_a_stick.template": "%s on a Stick",
+    ...
 }
 ```
-It will use the name of the workstations in the game.<br>
-The example above will result in "Example Crafting Table on a Stick"<br>
-If your language does use genders, or use something else more complicated<br>
-you will have to specify the name of each item. For example:
+> The `%s` will be replaced by the name of the workbench.
+> The example will output "Crafting Table on a Stick"
+
+#### 2. by providing exact translations
 ```json
 {
     "item.crafting_on_a_stick.crafting_table": "Crafting Table on a Stick",
@@ -29,6 +30,8 @@ you will have to specify the name of each item. For example:
     "item.crafting_on_a_stick.smithing_table": "Smithing Table on a Stick",
     "item.crafting_on_a_stick.anvil": "Anvil on a Stick",
     "item.crafting_on_a_stick.chipped_anvil": "Chipped Anvil on a Stick",
-    "item.crafting_on_a_stick.damaged_anvil": "Damaged Anvil on a Stick"
+    "item.crafting_on_a_stick.damaged_anvil": "Damaged Anvil on a Stick",
+    ...
 }
 ```
+
