@@ -13,6 +13,7 @@ public final class CoasIntegrations {
     public static final IPlatformIntegration PLATFORM = load();
     public static final ICuriosIntegration CURIOS = mod("curios", ICuriosIntegration.DEFAULT, () -> CuriosIntegration.INSTANCE);
     public static final IJeiIntegration JEI = mod("jei", IJeiIntegration.DEFAULT, () -> JeiIntegration.INSTANCE);
+    public static final IConfigIntegration CONFIG = mod("cloth", IConfigIntegration.DEFAULT, () -> ClothConfigIntegration.INSTANCE);
 
     private static IPlatformIntegration load() {
         final IPlatformIntegration loadedService = ServiceLoader.load(IPlatformIntegration.class, CoasIntegrations.class.getClassLoader())

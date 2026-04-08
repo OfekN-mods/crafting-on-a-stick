@@ -15,7 +15,6 @@ public final class Coas {
 
     @ApiStatus.Internal
     public static void init() {
-
         LOGGER.info("Hello from Common init on {}! we are currently in a {} environment!", CoasIntegrations.PLATFORM.getPlatformName(), CoasIntegrations.PLATFORM.getEnvironmentName());
         LOGGER.info("The ID for diamonds is {}", BuiltInRegistries.ITEM.getKey(Items.DIAMOND));
         if (CoasIntegrations.PLATFORM.isModLoaded(MID)) {
