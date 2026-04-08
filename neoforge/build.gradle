@@ -45,17 +45,12 @@ dependencies {
     compileOnly "mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${jei_mc_version}-neoforge-api:${jei_version}"
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
-    compileOnly "me.shedaniel.cloth:cloth-config:${cloth_version}"
-    compileOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_version}"
 
     if (run_with_jei.toBoolean()) {
         runtimeOnly "mezz.jei:jei-${jei_mc_version}-neoforge:${jei_version}"
     }
     if (run_with_curios.toBoolean()) {
         runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
-    }
-    if (run_with_cloth.toBoolean()) {
-        runtimeOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_version}"
     }
 }
 

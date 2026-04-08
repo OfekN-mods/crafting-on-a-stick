@@ -43,4 +43,6 @@ public interface IPlatformIntegration {
     void sendPacketToServer(CustomPacketPayload payload);
 
     default void getInventoryExtenders(BiConsumer<String, Supplier<IInventoryExtender>> output) {}
+
+    IConfigIntegration getConfigIntegration();
 }

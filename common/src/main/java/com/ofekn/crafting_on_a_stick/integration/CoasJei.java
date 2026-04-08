@@ -9,7 +9,7 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import net.minecraft.resources.Identifier;
 
 @JeiPlugin
-public class CoasJei implements IModPlugin {
+public final class CoasJei implements IModPlugin {
     public static final Identifier PLUGIN_UID = Coas.id(Coas.MID);
     @Override
     public Identifier getPluginUid() {

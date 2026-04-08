@@ -10,6 +10,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import org.slf4j.Logger;
 public class CoasNeoForge {
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public CoasNeoForge(IEventBus bus) {
+    public CoasNeoForge(IEventBus bus, ModContainer modContainer) {
         Coas.init();
 
         DeferredRegister.Items itemsReg = DeferredRegister.createItems(Coas.MID);
@@ -39,6 +40,8 @@ public class CoasNeoForge {
                 }).build()
         );
         tabsReg.register(bus);
+
+        NeoForgeConfigIntegration.register(modContainer);
     }
 
     private <I extends Item> void registerItem(DeferredRegister.Items itemsReg, CoasItem<I> item) {

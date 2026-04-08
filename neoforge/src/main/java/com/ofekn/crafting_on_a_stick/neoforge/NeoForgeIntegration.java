@@ -1,5 +1,6 @@
 package com.ofekn.crafting_on_a_stick.neoforge;
 
+import com.ofekn.crafting_on_a_stick.integration.IConfigIntegration;
 import com.ofekn.crafting_on_a_stick.integration.IInventoryExtender;
 import com.ofekn.crafting_on_a_stick.integration.IPlatformIntegration;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -37,5 +38,10 @@ public class NeoForgeIntegration implements IPlatformIntegration {
     @Override
     public void getInventoryExtenders(BiConsumer<String, Supplier<IInventoryExtender>> output) {
         output.accept("curios", () -> CuriosIntegration.INSTANCE);
+    }
+
+    @Override
+    public IConfigIntegration getConfigIntegration() {
+        return NeoForgeConfigIntegration.INSTANCE;
     }
 }

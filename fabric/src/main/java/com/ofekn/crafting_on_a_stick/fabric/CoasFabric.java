@@ -25,6 +25,7 @@ public class CoasFabric implements ModInitializer {
         Coas.init();
         registerItems();
         registerPackets();
+        GsonConfigIntegration.load();
     }
 
     private void registerItems() {

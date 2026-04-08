@@ -4,7 +4,6 @@ import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public final class CoasIntegrations {
@@ -13,8 +12,7 @@ public final class CoasIntegrations {
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final IPlatformIntegration PLATFORM = loadPlatform();
     public static final List<IInventoryExtender> INVENTORY_EXTENDERS = getInventoryExtenders();
-    public static final IJeiIntegration JEI = mod("jei", IJeiIntegration.DEFAULT, () -> JeiIntegration.INSTANCE);
-    public static final IConfigIntegration CONFIG = mod("cloth", IConfigIntegration.DEFAULT, () -> ClothConfigIntegration.INSTANCE);
+    public static final IConfigIntegration CONFIG = PLATFORM.getConfigIntegration();
 
     private static IPlatformIntegration loadPlatform() {
         final IPlatformIntegration loadedService = ServiceLoader.load(IPlatformIntegration.class, CoasIntegrations.class.getClassLoader())
@@ -28,10 +26,6 @@ public final class CoasIntegrations {
         List<Optional<IInventoryExtender>> result = new ArrayList<>();
         PLATFORM.getInventoryExtenders((a, b) -> result.add(getIntegration(a, b)));
         return result.stream().flatMap(Optional::stream).toList();
-    }
-
-    private static <T> T mod(String modid, T fallback, Supplier<? extends T> integration) {
-        return CoasIntegrations.<T>getIntegration(modid, integration).orElse(fallback);
     }
 
     private static <T> Optional<T> getIntegration(String modid, Supplier<? extends T> integration) {
