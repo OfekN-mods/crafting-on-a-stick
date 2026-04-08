@@ -2,9 +2,7 @@ package com.ofekn.crafting_on_a_stick.integration;
 
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public interface IPlatformIntegration {

@@ -8,9 +8,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class NeoForgeIntegration implements IPlatformIntegration {

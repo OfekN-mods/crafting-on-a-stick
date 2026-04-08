@@ -1,6 +1,5 @@
 package com.ofekn.crafting_on_a_stick.fabric;
 
-import com.mojang.logging.LogUtils;
 import com.ofekn.crafting_on_a_stick.Coas;
 import com.ofekn.crafting_on_a_stick.item.CoasItem;
 import com.ofekn.crafting_on_a_stick.network.SBOpen;
@@ -15,10 +14,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import org.slf4j.Logger;
 
 public class CoasFabric implements ModInitializer {
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     @Override
     public void onInitialize() {
@@ -57,8 +54,6 @@ public class CoasFabric implements ModInitializer {
 
     private void registerPackets() {
         PayloadTypeRegistry.serverboundPlay().register(SBOpen.TYPE, SBOpen.CODEC);
-        ServerPlayNetworking.registerGlobalReceiver(SBOpen.TYPE, (payload, context) -> {
-            payload.handle(context.player());
-        });
+        ServerPlayNetworking.registerGlobalReceiver(SBOpen.TYPE, (payload, context) -> payload.handle(context.player()));
     }
 }
