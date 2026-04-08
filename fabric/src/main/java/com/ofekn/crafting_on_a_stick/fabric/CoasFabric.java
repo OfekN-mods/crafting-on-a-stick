@@ -3,8 +3,11 @@ package com.ofekn.crafting_on_a_stick.fabric;
 import com.mojang.logging.LogUtils;
 import com.ofekn.crafting_on_a_stick.Coas;
 import com.ofekn.crafting_on_a_stick.item.CoasItem;
+import com.ofekn.crafting_on_a_stick.network.SBOpen;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -20,7 +23,11 @@ public class CoasFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Coas.init();
+        registerItems();
+        registerPackets();
+    }
 
+    private void registerItems() {
         for (CoasItem<?> item : CoasItem.getItems()) {
             registerItem(item);
         }
@@ -45,5 +52,12 @@ public class CoasFabric implements ModInitializer {
         I result = item.getConstructor().apply(item.getProperties().apply(new Item.Properties()).setId(itemKey));
         Registry.register(BuiltInRegistries.ITEM, itemKey, result);
         item.bind(() -> result);
+    }
+
+    private void registerPackets() {
+        PayloadTypeRegistry.serverboundPlay().register(SBOpen.TYPE, SBOpen.CODEC);
+        ServerPlayNetworking.registerGlobalReceiver(SBOpen.TYPE, (payload, context) -> {
+            payload.handle(context.player());
+        });
     }
 }
