@@ -233,6 +233,8 @@ public final class CoasItem<I extends Item> implements Supplier<I> {
                         level.levelEvent(damageAnvil(player, 0.12f) ? LevelEvent.SOUND_ANVIL_BROKEN : LevelEvent.SOUND_ANVIL_USED, pos, 0);
                         return null;
                     });
+                    super.onTake(player, carried);
+                    dummy.setDummySupplier(null);
                 } else {
                     super.onTake(player, carried);
                 }
