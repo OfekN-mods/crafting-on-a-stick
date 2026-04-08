@@ -20,7 +20,7 @@ import org.jspecify.annotations.Nullable;
 
 public class ItemOnAStick extends Item implements IWheelItem {
     private final MenuProvider menuProvider;
-    private final Component argumentedName;
+    private final Component itemName;
 
     public ItemOnAStick(Item.Properties properties, Block block, String containerName, MinecraftMenuBuilder builder) {
         super(properties);
@@ -28,10 +28,9 @@ public class ItemOnAStick extends Item implements IWheelItem {
                 (id, inv, player) -> builder.create(id, inv, new DummyContainerLevelAccess(player)),
                 Component.translatable("container." + containerName)
         );
-        this.argumentedName = Component.translatable(
-                "item.crafting_on_a_stick.template",
-                block.getName()
-        );
+        Component blockName = block.getName();
+        Component templateName = Component.translatable("item.crafting_on_a_stick.template", blockName);
+        this.itemName = Component.translatable(this.descriptionId, templateName);
     }
 
     private MenuProvider createMenuProviderWrapper(@Nullable ItemContainerContents contents) {
@@ -82,7 +81,7 @@ public class ItemOnAStick extends Item implements IWheelItem {
 
     @Override
     public Component getName(ItemStack stack) {
-        return argumentedName;
+        return itemName;
     }
 
     @Override
