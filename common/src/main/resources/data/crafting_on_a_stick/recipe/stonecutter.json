@@ -6,8 +6,8 @@
     "| "
   ],
   "key": {
-    "|": { "item": "minecraft:stick" },
-    "#": { "item": "minecraft:stonecutter" }
+    "|": "minecraft:stick",
+    "#": "minecraft:stonecutter"
   },
   "result": {
     "id": "crafting_on_a_stick:stonecutter",

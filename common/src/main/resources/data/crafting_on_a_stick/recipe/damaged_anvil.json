@@ -6,8 +6,8 @@
     "| "
   ],
   "key": {
-    "|": { "item": "minecraft:stick" },
-    "#": { "item": "minecraft:damaged_anvil" }
+    "|": "minecraft:stick",
+    "#": "minecraft:damaged_anvil"
   },
   "result": {
     "id": "crafting_on_a_stick:damaged_anvil",

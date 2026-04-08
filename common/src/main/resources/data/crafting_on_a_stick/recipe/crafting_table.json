@@ -6,8 +6,8 @@
     "| "
   ],
   "key": {
-    "|": { "item": "minecraft:stick" },
-    "#": { "item": "minecraft:crafting_table" }
+    "|": "minecraft:stick",
+    "#": "minecraft:crafting_table"
   },
   "result": {
     "id": "crafting_on_a_stick:crafting_table",

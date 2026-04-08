@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    { "item": "crafting_on_a_stick:cartography_table" }
+    "crafting_on_a_stick:cartography_table"
   ],
   "result": {
     "id": "minecraft:cartography_table",
