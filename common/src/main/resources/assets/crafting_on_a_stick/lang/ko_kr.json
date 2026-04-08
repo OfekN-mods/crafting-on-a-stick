@@ -1,0 +1,6 @@
+{
+	"item.crafting_on_a_stick.template": "휴대용 %s",
+	"itemGroup.crafting_on_a_stick": "휴대용 작업대",
+	"curios.identifier.crafting_on_a_stick": "휴대용 작업대",
+	"crafting_on_a_stick.key.open_curios": "휴대용 작업대 열기"
+}

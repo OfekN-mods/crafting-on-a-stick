@@ -1,0 +1,11 @@
+{
+	"item.crafting_on_a_stick.crafting_table": "%1$s%2$s pe un Baston",
+	"item.crafting_on_a_stick.loom": "%1$s%2$s%3$s",
+	"item.crafting_on_a_stick.grindstone": "%1$s%2$s%3$s",
+	"item.crafting_on_a_stick.cartography_table": "%1$s%2$s pe un Baston",
+	"item.crafting_on_a_stick.stonecutter": "%1$s%2$s pe un Băț",
+	"item.crafting_on_a_stick.smithing_table": "%1$s%2$s pe un Băț",
+	"item.crafting_on_a_stick.anvil": "%1$s%2$s pe un Băț",
+	"item.crafting_on_a_stick.chipped_anvil": "%1$s%2$s pe un Băț",
+	"item.crafting_on_a_stick.damaged_anvil": "%1$s%2$s pe un Băț"
+}

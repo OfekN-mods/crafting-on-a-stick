@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "crafting_on_a_stick:crafting_table" }
+  ],
+  "result": {
+    "id": "minecraft:crafting_table",
+    "count": 1
+  }
+}

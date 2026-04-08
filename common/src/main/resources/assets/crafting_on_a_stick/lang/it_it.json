@@ -1,0 +1,15 @@
+{
+  "item.crafting_on_a_stick.crafting_table": "Banco da lavoro su un bastone",
+  "item.crafting_on_a_stick.loom": "Telaio su un bastone",
+  "item.crafting_on_a_stick.grindstone": "Mola su un bastone",
+  "item.crafting_on_a_stick.cartography_table": "Banco da cartografia su un bastone",
+  "item.crafting_on_a_stick.stonecutter": "Tagliapietre su un bastone",
+  "item.crafting_on_a_stick.smithing_table": "Banco da forgiatura su un bastone",
+  "item.crafting_on_a_stick.anvil": "Incudine su un bastone",
+  "item.crafting_on_a_stick.chipped_anvil": "Incudine scheggiata su un bastone",
+  "item.crafting_on_a_stick.damaged_anvil": "Incudine danneggiata su un bastone",
+
+  "itemGroup.crafting_on_a_stick": "Fabbricazione su un bastone",
+  "curios.identifier.crafting_on_a_stick": "Fabbricazione su un bastone",
+  "crafting_on_a_stick.key.open_curios": "Apri la fabbricazione con un bastone"
+}

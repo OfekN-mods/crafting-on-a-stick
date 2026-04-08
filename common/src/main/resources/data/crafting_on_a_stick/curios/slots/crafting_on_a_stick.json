@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "size": 1,
+  "operation": "SET",
+  "order": 700,
+  "icon": "crafting_on_a_stick:item/curios_on_a_stick",
+  "add_cosmetic": false,
+  "use_native_gui": true,
+  "render_toggle": false
+}

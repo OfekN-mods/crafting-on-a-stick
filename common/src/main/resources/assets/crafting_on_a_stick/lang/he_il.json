@@ -1,0 +1,8 @@
+{
+  "item.crafting_on_a_stick.template": "%s על מקל",
+
+  "itemGroup.crafting_on_a_stick": "שולחן עבודה על מקל",
+  "curios.identifier.crafting_on_a_stick": "שולחן עבודה על מקל",
+  "crafting_on_a_stick.key.open_curios": "פתיחת שולחן עבודה על מקל",
+  "gui.crafting_on_a_stick.selection_wheel.no_tool": "אין לך אף שולחן עבודה"
+}

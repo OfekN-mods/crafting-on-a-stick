@@ -1,0 +1,6 @@
+{
+	"item.crafting_on_a_stick.template": "便攜式%s",
+	"itemGroup.crafting_on_a_stick": "便攜式工具",
+	"curios.identifier.crafting_on_a_stick": "便攜式工具",
+	"crafting_on_a_stick.key.open_curios": "開啟便攜式工具"
+}
