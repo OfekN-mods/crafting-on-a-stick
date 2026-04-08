@@ -6,6 +6,17 @@ dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    compileOnly "mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${jei_mc_version}-fabric-api:${jei_version}"
+    compileOnly "me.shedaniel.cloth:cloth-config:${cloth_version}"
+    compileOnly "me.shedaniel.cloth:cloth-config-fabric:${cloth_version}"
+
+    if (run_with_jei.toBoolean()) {
+        runtimeOnly "mezz.jei:jei-${jei_mc_version}-fabric:${jei_version}"
+    }
+    if (run_with_cloth.toBoolean()) {
+        runtimeOnly "me.shedaniel.cloth:cloth-config-fabric:${cloth_version}"
+    }
 }
 
 loom {

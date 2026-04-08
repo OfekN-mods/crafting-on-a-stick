@@ -1,7 +1,9 @@
 package com.ofekn.crafting_on_a_stick.fabric;
 
 import com.ofekn.crafting_on_a_stick.integration.IPlatformIntegration;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public class FabricIntegration implements IPlatformIntegration {
 
@@ -18,5 +20,10 @@ public class FabricIntegration implements IPlatformIntegration {
     @Override
     public boolean isDevelopmentEnvironment() {
         return FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+
+    @Override
+    public void sendPacketToServer(CustomPacketPayload payload) {
+        ClientPlayNetworking.send(payload);
     }
 }
