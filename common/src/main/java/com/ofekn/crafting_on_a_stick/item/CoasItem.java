@@ -24,17 +24,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 public final class CoasItem<I extends Item> implements Supplier<I> {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final List<CoasItem<?>> ITEMS = new ArrayList<>();
     private final String name;
     private final Function<Item.Properties, I> constructor;
-    private final Function<Item.Properties, Item.Properties> properties;
+    private final UnaryOperator<Item.Properties> properties;
     @Nullable
     private Supplier<I> value;
 
-    private CoasItem(String name, Function<Item.Properties, I> constructor, Function<Item.Properties, Item.Properties> properties) {
+    private CoasItem(String name, Function<Item.Properties, I> constructor, UnaryOperator<Item.Properties> properties) {
         this.name = name;
         this.constructor = constructor;
         this.properties = properties;
@@ -48,7 +49,7 @@ public final class CoasItem<I extends Item> implements Supplier<I> {
         return constructor;
     }
 
-    public Function<Item.Properties, Item.Properties> getProperties() {
+    public UnaryOperator<Item.Properties> getProperties() {
         return properties;
     }
 
@@ -203,7 +204,7 @@ public final class CoasItem<I extends Item> implements Supplier<I> {
         return properties.stacksTo(1);
     }
 
-    private static <T extends Item> CoasItem<T> createItem(Block block, Function<Item.Properties, T> itemConstructor, Function<Item.Properties, Item.Properties> properties) {
+    private static <T extends Item> CoasItem<T> createItem(Block block, Function<Item.Properties, T> itemConstructor, UnaryOperator<Item.Properties> properties) {
         ResourceKey<Block> blockKey = BuiltInRegistries.BLOCK.getResourceKey(block).orElseThrow();
         String path = blockKey.identifier().getPath();
         var newItem = new CoasItem<>(path, itemConstructor, properties);
