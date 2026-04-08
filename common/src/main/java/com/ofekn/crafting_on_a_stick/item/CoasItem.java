@@ -28,7 +28,6 @@ import java.util.function.UnaryOperator;
 
 public final class CoasItem<I extends Item> implements Supplier<I> {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final List<CoasItem<?>> ITEMS = new ArrayList<>();
     private final String name;
     private final Function<Item.Properties, I> constructor;
     private final UnaryOperator<Item.Properties> properties;
@@ -69,7 +68,17 @@ public final class CoasItem<I extends Item> implements Supplier<I> {
     }
 
     public static List<CoasItem<?>> getItems() {
-        return Collections.unmodifiableList(ITEMS);
+        return List.of(
+                CRAFTING_TABLE,
+                LOOM,
+                GRINDSTONE,
+                CARTOGRAPHY_TABLE,
+                STONECUTTER,
+                SMITHING_TABLE,
+                ANVIL,
+                CHIPPED_ANVIL,
+                DAMAGED_ANVIL
+        );
     }
 
     private static boolean doPlayerHave(Player player, Supplier<? extends Item> itemReg) {
@@ -194,8 +203,6 @@ public final class CoasItem<I extends Item> implements Supplier<I> {
 
 
 
-
-
     private static CoasItem<ItemOnAStick> createSimpleItem(Block block, String containerName, MinecraftMenuBuilder builder) {
         return createItem(block, (props) -> new ItemOnAStick(props, block, containerName, builder), CoasItem::itemOnAStickProperties);
     }
@@ -207,9 +214,7 @@ public final class CoasItem<I extends Item> implements Supplier<I> {
     private static <T extends Item> CoasItem<T> createItem(Block block, Function<Item.Properties, T> itemConstructor, UnaryOperator<Item.Properties> properties) {
         ResourceKey<Block> blockKey = BuiltInRegistries.BLOCK.getResourceKey(block).orElseThrow();
         String path = blockKey.identifier().getPath();
-        var newItem = new CoasItem<>(path, itemConstructor, properties);
-        ITEMS.add(newItem);
-        return newItem;
+        return new CoasItem<>(path, itemConstructor, properties);
     }
 
     private static CoasItem<ItemOnAStick> createAnvil(Block block) {

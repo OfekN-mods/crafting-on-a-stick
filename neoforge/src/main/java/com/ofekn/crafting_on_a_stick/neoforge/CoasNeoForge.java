@@ -15,20 +15,16 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Mod(Coas.MID)
 public class CoasNeoForge {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public CoasNeoForge(IEventBus bus) {
-        LOGGER.info("Hello NeoForge world!");
         Coas.init();
+
         DeferredRegister.Items itemsReg = DeferredRegister.createItems(Coas.MID);
-        List<DeferredItem<?>> items = new ArrayList<>();
         for (CoasItem<?> item : CoasItem.getItems()) {
-            items.add(registerItem(itemsReg, item));
+            registerItem(itemsReg, item);
         }
         itemsReg.register(bus);
 
@@ -37,19 +33,16 @@ public class CoasNeoForge {
                 .title(Component.translatable("itemGroup.crafting_on_a_stick"))
                 .withTabsBefore(CreativeModeTabs.COMBAT)
                 .icon(() -> CoasItem.CRAFTING_TABLE.get().getDefaultInstance())
-                .displayItems((parameters, output) -> {
-                    for (DeferredItem<?> item : items) {
-                        output.accept(item);
+                .displayItems((_, output) -> {
+                    for (var item : CoasItem.getItems()) {
+                        output.accept(item.get());
                     }
                 }).build()
         );
         tabsReg.register(bus);
-
     }
 
-    private <I extends Item> DeferredItem<I> registerItem(DeferredRegister.Items itemsReg, CoasItem<I> item) {
-        DeferredItem<I> deferredItem = itemsReg.registerItem(item.getName(), item.getConstructor(), item.getProperties());
-        item.bind(deferredItem);
-        return deferredItem;
+    private <I extends Item> void registerItem(DeferredRegister.Items itemsReg, CoasItem<I> item) {
+        item.bind(itemsReg.registerItem(item.getName(), item.getConstructor(), item.getProperties()));
     }
 }
