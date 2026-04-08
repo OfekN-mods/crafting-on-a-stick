@@ -2,7 +2,16 @@ package com.ofekn.crafting_on_a_stick.fabric;
 
 import com.mojang.logging.LogUtils;
 import com.ofekn.crafting_on_a_stick.Coas;
+import com.ofekn.crafting_on_a_stick.item.CoasItem;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import org.slf4j.Logger;
 
 public class CoasFabric implements ModInitializer {
@@ -10,7 +19,31 @@ public class CoasFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("Hello Fabric world!");
         Coas.init();
+
+        for (CoasItem<?> item : CoasItem.getItems()) {
+            registerItem(item);
+        }
+
+        CreativeModeTab tab = FabricCreativeModeTab.builder()
+                .title(Component.translatable("itemGroup.crafting_on_a_stick"))
+                .icon(() -> CoasItem.CRAFTING_TABLE.get().getDefaultInstance())
+                .displayItems((_, output) -> {
+                    for (var item : CoasItem.getItems()) {
+                        output.accept(item.get());
+                    }
+                }).build();
+
+        ResourceKey<CreativeModeTab> tabKey = ResourceKey.create(
+                Registries.CREATIVE_MODE_TAB, Coas.id("creative_tab")
+        );
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, tabKey, tab);
+    }
+
+    private <I extends Item> void registerItem(CoasItem<I> item) {
+        ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, Coas.id(item.getName()));
+        I result = item.getConstructor().apply(item.getProperties().apply(new Item.Properties()).setId(itemKey));
+        Registry.register(BuiltInRegistries.ITEM, itemKey, result);
+        item.bind(() -> result);
     }
 }
