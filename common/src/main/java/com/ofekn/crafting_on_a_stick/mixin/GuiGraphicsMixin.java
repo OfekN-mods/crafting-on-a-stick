@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Shadow;
 public class GuiGraphicsMixin implements IGuiGraphicsExtender {
 	@Final
 	@Shadow
-    GuiRenderState guiRenderState;
+    private GuiRenderState guiRenderState;
 
 	@Override
 	public void coas$renderColoredPolygon(RenderPipeline pipeline, Vector2f[] points, int color) {
