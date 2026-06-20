@@ -44,7 +44,7 @@ public class CoasWheelScreen extends Screen {
             CoasIntegrations.PLATFORM.sendPacketToServer(new SBOpen(firstOption));
 			return;
 		}
-		minecraft.setScreen(new CoasWheelScreen(Component.empty(), player, firstOption));
+		minecraft.gui.setScreen(new CoasWheelScreen(Component.empty(), player, firstOption));
 	}
 
 	protected CoasWheelScreen(Component title, Player player, ItemStack firstOption) {
@@ -230,7 +230,7 @@ public class CoasWheelScreen extends Screen {
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
 		float t = getAnimationT(partialTick);
 		graphics.fill(0, 0, width, height, applyAlpha(0x40000000, t));
-        this.minecraft.gui.extractDeferredSubtitles();
+		this.minecraft.gui.hud.extractDeferredSubtitles();
 	}
 
 	private float easeScale(float t) {

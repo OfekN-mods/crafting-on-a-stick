@@ -16,7 +16,7 @@ public final class CoasClient {
         if (!CoasKeyMappings.OPEN_CURIOS_KEY.consumeClick()) {
             return;
         }
-        if (minecraft.screen != null) {
+        if (minecraft.gui.screen() != null) {
             return;
         }
         Player player = minecraft.player;
