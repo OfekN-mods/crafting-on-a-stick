@@ -56,6 +56,13 @@ public final class ModItems {
 		if (!COASConfig.getStoreItems()) {
 			return;
 		}
+//		if (player.isRemoved()) {
+//			// when the player leaves the world
+//			// it saves, and then closes the container
+//			// updating the player inventory won't save
+//			// so we prefer dropping the items
+//			return;
+//		}
 
         searchInventory(player, itemReg, stack -> !stack.has(DataComponents.CONTAINER)).ifPresent(ref -> {
             ItemStack stack = ref.get();
