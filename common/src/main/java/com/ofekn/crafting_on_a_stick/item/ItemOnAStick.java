@@ -62,6 +62,13 @@ public class ItemOnAStick extends Item implements IWheelItem {
     }
 
     public ItemStack openContainer(Player player, ItemStack stack) {
+        // Old version bugfix https://github.com/OfekN-mods/crafting-on-a-stick/issues/25
+        // the client should not send this packet while a container is open
+        // unless a desync happens
+        if (player.hasContainerOpen()) {
+            return stack;
+        }
+        // end bugfix
         ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
         stack = stack.copy();
         stack.remove(DataComponents.CONTAINER);
