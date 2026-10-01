@@ -50,7 +50,7 @@ public class ItemOnAStick extends Item implements IWheelItem {
                 if (result == null) {
                     return null;
                 }
-                var contentsList = contents.allItemsCopyStream().toList();
+                var contentsList = contents.itemCopies().toList();
                 for (int i = 0; i < contentsList.size(); i++) {
                     if (result.isValidSlotIndex(i)) {
                         result.setItem(i, 0, contentsList.get(i));

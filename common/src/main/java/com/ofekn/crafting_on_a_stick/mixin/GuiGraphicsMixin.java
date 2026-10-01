@@ -1,6 +1,6 @@
 package com.ofekn.crafting_on_a_stick.mixin;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.ofekn.crafting_on_a_stick.client.ColoredPolygonRenderState;
 import com.ofekn.crafting_on_a_stick.client.IGuiGraphicsExtender;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

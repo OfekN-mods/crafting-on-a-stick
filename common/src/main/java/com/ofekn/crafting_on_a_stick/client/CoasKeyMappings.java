@@ -10,7 +10,7 @@ public final class CoasKeyMappings {
 
 	public static final KeyMapping OPEN_CURIOS_KEY = new KeyMapping(
 			"crafting_on_a_stick.key.open_curios",
-			InputConstants.Type.KEYSYM,
+			InputConstants.Type.KEYBOARD,
 			InputConstants.KEY_V,
 			KeyMapping.Category.INVENTORY
 	);

@@ -9,11 +9,11 @@ import org.jetbrains.annotations.ApiStatus;
 public enum NeoForgeConfigIntegration implements IConfigIntegration {
     INSTANCE;
 
-    private final ModConfigSpec.Builder commonBuilder = new ModConfigSpec.Builder();
-    private final ModConfigSpec.BooleanValue storeItems = commonBuilder
+    private final ModConfigSpec.Builder syncBuilder = new ModConfigSpec.Builder();
+    private final ModConfigSpec.BooleanValue storeItems = syncBuilder
             .comment("Whether to store items in the crafting stations when they are closed")
             .define("storeItems", true);
-    private final ModConfigSpec commonSpec = commonBuilder.build();
+    private final ModConfigSpec syncSpec = syncBuilder.build();
 
     private final ModConfigSpec.Builder clientBuilder = new ModConfigSpec.Builder();
     private final ModConfigSpec.ConfigValue<String> wheelType = clientBuilder
@@ -23,7 +23,7 @@ public enum NeoForgeConfigIntegration implements IConfigIntegration {
 
     @ApiStatus.Internal
     static void register(ModContainer modContainer) {
-        modContainer.registerConfig(ModConfig.Type.COMMON, INSTANCE.commonSpec);
+        modContainer.registerConfig(ModConfig.Type.SYNCED, INSTANCE.syncSpec);
         modContainer.registerConfig(ModConfig.Type.CLIENT, INSTANCE.clientSpec);
     }
 
