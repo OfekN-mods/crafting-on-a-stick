@@ -1,9 +1,9 @@
 {
-	"item.crafting_on_a_stick.template": "%s на паличці",
-	"itemGroup.crafting_on_a_stick": "Крафт на паличці",
-	"curios.identifier.crafting_on_a_stick": "Крафт на паличці",
-	"crafting_on_a_stick.key.open_curios": "Відкрити крафт на паличці",
-	"gui.crafting_on_a_stick.selection_wheel.no_tool": "У вас немає жодного інструмента",
+	"item.crafting_on_a_stick.template": "%s boton",
+	"itemGroup.crafting_on_a_stick": "Crafting boton",
+	"curios.identifier.crafting_on_a_stick": "Crafting boton",
+	"crafting_on_a_stick.key.open_curios": "Crafting boton megnyitása",
+	"gui.crafting_on_a_stick.selection_wheel.no_tool": "Nincs egyetlen szerszámod sem",
 
 	"item.crafting_on_a_stick.crafting_table": "%s",
 	"item.crafting_on_a_stick.loom": "%s",

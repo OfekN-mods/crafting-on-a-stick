@@ -1,3 +1,17 @@
 {
-	"item.crafting_on_a_stick.template": "%s на Палке"
+	"item.crafting_on_a_stick.template": "%s на палке",
+	"itemGroup.crafting_on_a_stick": "Крафт на палке",
+	"curios.identifier.crafting_on_a_stick": "Крафт на палке",
+	"crafting_on_a_stick.key.open_curios": "Открыть крафт на палке",
+	"gui.crafting_on_a_stick.selection_wheel.no_tool": "У вас нет ни одного инструмента",
+
+	"item.crafting_on_a_stick.crafting_table": "%s",
+	"item.crafting_on_a_stick.loom": "%s",
+	"item.crafting_on_a_stick.grindstone": "%s",
+	"item.crafting_on_a_stick.cartography_table": "%s",
+	"item.crafting_on_a_stick.stonecutter": "%s",
+	"item.crafting_on_a_stick.smithing_table": "%s",
+	"item.crafting_on_a_stick.anvil": "%s",
+	"item.crafting_on_a_stick.chipped_anvil": "%s",
+	"item.crafting_on_a_stick.damaged_anvil": "%s"
 }

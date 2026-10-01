@@ -1,9 +1,9 @@
 {
-	"item.crafting_on_a_stick.template": "%s на паличці",
-	"itemGroup.crafting_on_a_stick": "Крафт на паличці",
-	"curios.identifier.crafting_on_a_stick": "Крафт на паличці",
-	"crafting_on_a_stick.key.open_curios": "Відкрити крафт на паличці",
-	"gui.crafting_on_a_stick.selection_wheel.no_tool": "У вас немає жодного інструмента",
+	"item.crafting_on_a_stick.template": "%s am Stiel",
+	"itemGroup.crafting_on_a_stick": "Werkbank am Stiel",
+	"curios.identifier.crafting_on_a_stick": "Werkbank am Stiel",
+	"crafting_on_a_stick.key.open_curios": "Werkbank am Stiel öffnen",
+	"gui.crafting_on_a_stick.selection_wheel.no_tool": "Du hast kein Werkzeug",
 
 	"item.crafting_on_a_stick.crafting_table": "%s",
 	"item.crafting_on_a_stick.loom": "%s",
