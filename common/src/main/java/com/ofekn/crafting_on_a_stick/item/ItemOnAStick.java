@@ -62,6 +62,11 @@ public class ItemOnAStick extends Item implements IWheelItem {
     }
 
     public ItemStack openContainer(Player player, ItemStack stack) {
+        // the client should not send this packet while a container is open
+        // unless a desync happens
+        if (player.hasContainerOpen()) {
+            return stack;
+        }
         ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
         stack = stack.copy();
         stack.remove(DataComponents.CONTAINER);

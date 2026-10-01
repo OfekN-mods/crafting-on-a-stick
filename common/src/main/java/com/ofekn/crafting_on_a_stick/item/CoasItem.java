@@ -88,6 +88,13 @@ public final class CoasItem<I extends Item> implements Supplier<I> {
         if (!CoasIntegrations.CONFIG.getStoreItems()) {
             return;
         }
+        if (player.isRemoved()) {
+            // when the player leaves the world
+            // it saves, and then closes the container
+            // updating the player inventory won't save
+            // so we prefer dropping the items
+            return;
+        }
 
         CoasUtils.searchInventory(player, itemReg.get(), stack -> !stack.has(DataComponents.CONTAINER)).ifPresent(ref -> {
             ItemStack stack = ref.get();
